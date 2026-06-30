@@ -6,9 +6,9 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
-    <title>Cairn</title>
+    <title>The Velvet Curtain Case</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Special+Elite&family=Inter:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -17,773 +17,1033 @@
         padding: 0;
         box-sizing: border-box;
       }
+
+      :root {
+        --paper: #ede3d0;
+        --paper-dark: #e0d3b8;
+        --ink: #1c1812;
+        --ink-soft: #3a332a;
+        --brass: #a8823c;
+        --blood: #8b2c2c;
+        --smoke: #6b6458;
+        --folder: #c9a876;
+      }
+
       body {
+        background: var(--ink);
+        background-image:
+          radial-gradient(
+            ellipse at 30% 20%,
+            rgba(168, 130, 60, 0.06) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 70% 80%,
+            rgba(139, 44, 44, 0.05) 0%,
+            transparent 50%
+          );
         min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
         font-family: "Inter", sans-serif;
-        overflow: hidden;
-        background: linear-gradient(
-          180deg,
-          #cfe0e8 0%,
-          #e8ddc8 55%,
-          #d4c8a8 100%
+        color: var(--paper);
+        overflow-x: hidden;
+      }
+
+      /* ── Desk lamp vignette ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 0%,
+          rgba(168, 130, 60, 0.08) 0%,
+          transparent 60%
         );
-      }
-
-      canvas {
-        display: block;
-        position: fixed;
-        inset: 0;
-      }
-
-      #ui {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
         pointer-events: none;
-        z-index: 10;
+        z-index: 0;
       }
 
-      #header {
-        margin-top: 28px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2px;
+      #app {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 32px 24px 80px;
+      }
+
+      /* ── Header ── */
+      #case-header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      #case-label {
+        font-family: "Special Elite", monospace;
+        font-size: 11px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--brass);
+        margin-bottom: 8px;
       }
       h1 {
-        font-family: "Cormorant Garamond", serif;
-        font-size: clamp(26px, 5vw, 36px);
+        font-family: "Playfair Display", serif;
+        font-weight: 900;
+        font-size: clamp(32px, 6vw, 56px);
+        color: var(--paper);
+        letter-spacing: 0.01em;
+        line-height: 1.05;
+      }
+      #case-sub {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
         font-weight: 500;
-        font-style: italic;
-        color: #3a3530;
-      }
-      #stone-count {
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #5a534a;
-        opacity: 0.5;
+        font-size: 15px;
+        color: var(--smoke);
+        margin-top: 6px;
       }
 
-      #hint {
-        position: fixed;
-        bottom: 26px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 12px;
-        letter-spacing: 0.05em;
-        color: #4a443c;
-        opacity: 0.4;
-        text-align: center;
-        max-width: 340px;
-        line-height: 1.5;
-        pointer-events: none;
+      /* ── Briefing screen ── */
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
       }
 
-      /* Toast */
-      #toast {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0.9);
-        background: rgba(58, 53, 48, 0.88);
-        color: #f5f0e4;
-        padding: 12px 26px;
-        border-radius: 50px;
-        font-family: "Cormorant Garamond", serif;
-        font-style: italic;
-        font-size: 17px;
-        opacity: 0;
-        pointer-events: none;
-        transition:
-          opacity 0.4s,
-          transform 0.4s;
-        z-index: 50;
-        white-space: nowrap;
+      #briefing {
+        max-width: 680px;
+        margin: 0 auto;
+        background: var(--paper);
+        color: var(--ink);
+        border-radius: 2px;
+        padding: 40px 44px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        position: relative;
       }
-      #toast.show {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-
-      /* Reset button */
-      #reset-btn {
-        position: fixed;
-        top: 24px;
+      #briefing::before {
+        content: "CASE FILE";
+        position: absolute;
+        top: 20px;
         right: 24px;
-        background: rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(6px);
-        border: none;
-        border-radius: 50px;
-        padding: 9px 18px;
-        font-family: "Inter", sans-serif;
+        font-family: "Special Elite", monospace;
         font-size: 10px;
+        letter-spacing: 0.2em;
+        color: var(--blood);
+        border: 1.5px solid var(--blood);
+        padding: 3px 10px;
+        transform: rotate(4deg);
+        opacity: 0.7;
+      }
+      #briefing h2 {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 24px;
+        margin-bottom: 18px;
+        color: var(--ink);
+      }
+      #briefing p {
+        font-family: "Special Elite", monospace;
+        font-size: 14px;
+        line-height: 1.85;
+        color: var(--ink-soft);
+        margin-bottom: 16px;
+      }
+      #briefing .signature {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        text-align: right;
+        color: var(--smoke);
+        font-size: 14px;
+        margin-top: 24px;
+      }
+      .begin-btn {
+        display: block;
+        margin: 32px auto 0;
+        font-family: "Special Elite", monospace;
+        font-size: 13px;
         letter-spacing: 0.15em;
         text-transform: uppercase;
-        color: #4a443c;
+        background: var(--ink);
+        color: var(--paper);
+        border: none;
+        padding: 14px 38px;
         cursor: pointer;
-        pointer-events: all;
-        opacity: 0.55;
         transition:
-          opacity 0.2s,
-          background 0.2s;
-        z-index: 20;
+          background 0.2s,
+          transform 0.15s;
       }
-      #reset-btn:hover {
-        opacity: 1;
-        background: rgba(255, 255, 255, 0.7);
+      .begin-btn:hover {
+        background: var(--blood);
+        transform: translateY(-2px);
       }
 
-      /* Held stone indicator (next stone preview) */
-      #next-stone-preview {
-        position: fixed;
-        bottom: 80px;
-        left: 50%;
-        transform: translateX(-50%);
+      /* ── Main interrogation layout ── */
+      #main-layout {
+        display: grid;
+        grid-template-columns: 240px 1fr 280px;
+        gap: 24px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        #main-layout {
+          grid-template-columns: 1fr;
+        }
+        #suspect-list {
+          order: 1;
+        }
+        #dialogue-panel {
+          order: 2;
+        }
+        #notebook {
+          order: 3;
+        }
+      }
+
+      /* ── Suspect list (left) ── */
+      #suspect-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .panel-label {
+        font-family: "Special Elite", monospace;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--brass);
+        margin-bottom: 4px;
+      }
+      .suspect-card {
+        background: var(--paper);
+        color: var(--ink);
+        padding: 14px 16px;
+        cursor: pointer;
+        border-left: 4px solid transparent;
+        transition:
+          transform 0.15s,
+          border-color 0.2s;
+        position: relative;
+      }
+      .suspect-card:hover {
+        transform: translateX(4px);
+      }
+      .suspect-card.selected {
+        border-left-color: var(--blood);
+        background: var(--paper-dark);
+      }
+      .suspect-card.accused {
+        opacity: 0.45;
+      }
+      .suspect-name {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .suspect-role {
+        font-family: "Special Elite", monospace;
+        font-size: 11px;
+        color: var(--smoke);
+        margin-top: 2px;
+      }
+      .suspect-asked-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 10px;
+        color: var(--brass);
+        font-family: "Special Elite", monospace;
+      }
+
+      /* ── Dialogue panel (center) ── */
+      #dialogue-panel {
+        background: var(--paper);
+        color: var(--ink);
+        min-height: 480px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4);
+      }
+      #suspect-header {
         display: flex;
         align-items: center;
-        gap: 10px;
-        pointer-events: none;
-        opacity: 0.7;
-        z-index: 15;
+        gap: 16px;
+        padding: 24px 28px;
+        border-bottom: 2px solid var(--ink);
       }
-      #next-label {
-        font-size: 9px;
-        letter-spacing: 0.18em;
+      #suspect-portrait {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Playfair Display", serif;
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--paper);
+        flex-shrink: 0;
+      }
+      #suspect-header-text h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      #suspect-header-text p {
+        font-family: "Special Elite", monospace;
+        font-size: 12px;
+        color: var(--smoke);
+        margin-top: 2px;
+      }
+
+      #dialogue-body {
+        flex: 1;
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        overflow-y: auto;
+        max-height: 340px;
+      }
+      .dialogue-line {
+        display: flex;
+        gap: 12px;
+        animation: fadeIn 0.35s ease;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .dialogue-line.player .bubble {
+        background: var(--ink);
+        color: var(--paper);
+        margin-left: auto;
+      }
+      .dialogue-line.player {
+        justify-content: flex-end;
+      }
+      .bubble {
+        font-family: "Special Elite", monospace;
+        font-size: 13.5px;
+        line-height: 1.6;
+        background: var(--paper-dark);
+        padding: 12px 16px;
+        max-width: 80%;
+        position: relative;
+      }
+      .bubble.contradiction-flag {
+        border-left: 3px solid var(--blood);
+      }
+
+      #empty-dialogue {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        color: var(--smoke);
+        font-size: 15px;
+        text-align: center;
+        padding: 40px;
+      }
+
+      /* Questions */
+      #questions {
+        padding: 18px 28px 24px;
+        border-top: 1px solid rgba(28, 24, 18, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .q-btn {
+        font-family: "Inter", sans-serif;
+        font-size: 13.5px;
+        font-weight: 500;
+        text-align: left;
+        background: none;
+        border: 1.5px solid rgba(28, 24, 18, 0.18);
+        color: var(--ink);
+        padding: 11px 16px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+      }
+      .q-btn:hover {
+        background: rgba(28, 24, 18, 0.05);
+        border-color: var(--ink);
+      }
+      .q-btn:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+      .q-btn:disabled:hover {
+        background: none;
+      }
+
+      /* ── Notebook (right) ── */
+      #notebook {
+        background: #2a241c;
+        padding: 20px;
+        position: sticky;
+        top: 20px;
+        box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4);
+      }
+      #notebook .panel-label {
+        color: var(--brass);
+        margin-bottom: 12px;
+      }
+      #clue-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 60px;
+      }
+      .clue-empty {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 12.5px;
+        color: var(--smoke);
+        line-height: 1.5;
+      }
+      .clue-card {
+        background: var(--paper);
+        color: var(--ink);
+        padding: 10px 12px;
+        font-family: "Special Elite", monospace;
+        font-size: 11.5px;
+        line-height: 1.5;
+        position: relative;
+        animation: fadeIn 0.4s ease;
+      }
+      .clue-card.contradiction {
+        background: #f3e5e0;
+      }
+      .clue-stamp {
+        position: absolute;
+        top: -8px;
+        right: -6px;
+        background: var(--blood);
+        color: #fff;
+        font-family: "Special Elite", monospace;
+        font-size: 8px;
+        letter-spacing: 0.1em;
+        padding: 3px 7px;
+        transform: rotate(8deg);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #accuse-section {
+        margin-top: 22px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(237, 227, 208, 0.15);
+      }
+      #accuse-btn {
+        width: 100%;
+        font-family: "Special Elite", monospace;
+        font-size: 12px;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: #5a534a;
-        opacity: 0.6;
+        background: var(--blood);
+        color: #fff;
+        border: none;
+        padding: 13px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+      }
+      #accuse-btn:hover {
+        background: #a83838;
+        transform: translateY(-2px);
+      }
+      #accuse-btn:disabled {
+        background: var(--smoke);
+        cursor: default;
+        transform: none;
+      }
+      #accuse-hint {
+        font-family: "Inter", sans-serif;
+        font-size: 10.5px;
+        color: var(--smoke);
+        text-align: center;
+        margin-top: 8px;
+        line-height: 1.4;
+      }
+
+      /* ── Accusation modal ── */
+      #accuse-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+        padding: 24px;
+      }
+      #accuse-modal.show {
+        display: flex;
+      }
+      #accuse-modal-inner {
+        background: var(--paper);
+        color: var(--ink);
+        max-width: 420px;
+        width: 100%;
+        padding: 32px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+      }
+      #accuse-modal-inner h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      #accuse-modal-inner p {
+        font-family: "Special Elite", monospace;
+        font-size: 12.5px;
+        color: var(--smoke);
+        margin-bottom: 18px;
+      }
+      .accuse-option {
+        display: block;
+        width: 100%;
+        text-align: left;
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        background: none;
+        border: 1.5px solid rgba(28, 24, 18, 0.2);
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+      }
+      .accuse-option:hover {
+        background: rgba(28, 24, 18, 0.05);
+        border-color: var(--ink);
+      }
+      #cancel-accuse {
+        display: block;
+        margin: 14px auto 0;
+        background: none;
+        border: none;
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        color: var(--smoke);
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      /* ── Result screen ── */
+      #result-screen {
+        max-width: 640px;
+        margin: 0 auto;
+        background: var(--paper);
+        color: var(--ink);
+        padding: 44px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+      #result-icon {
+        font-size: 48px;
+        margin-bottom: 8px;
+      }
+      #result-title {
+        font-family: "Playfair Display", serif;
+        font-weight: 900;
+        font-size: 32px;
+        margin-bottom: 10px;
+      }
+      #result-text {
+        font-family: "Special Elite", monospace;
+        font-size: 14px;
+        line-height: 1.85;
+        color: var(--ink-soft);
+        text-align: left;
+        margin-bottom: 24px;
+      }
+      #play-again-btn {
+        font-family: "Special Elite", monospace;
+        font-size: 12px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        background: var(--ink);
+        color: var(--paper);
+        border: none;
+        padding: 13px 32px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      #play-again-btn:hover {
+        background: var(--blood);
       }
     </style>
   </head>
   <body>
-    <canvas id="c"></canvas>
+    <div id="app">
+      <div id="case-header">
+        <div id="case-label">Case File No. 7</div>
+        <h1>The Velvet Curtain</h1>
+        <div id="case-sub">A Theatre District Mystery</div>
+      </div>
 
-    <div id="ui">
-      <div id="header">
-        <h1>Cairn</h1>
-        <span id="stone-count">0 stones balanced</span>
+      <!-- Briefing -->
+      <div class="screen active" id="briefing-screen">
+        <div id="briefing">
+          <h2>The Situation</h2>
+          <p>
+            Opening night at the Aldous Theatre ended in tragedy. Mr. Edmund
+            Vance, the theatre's owner, was found dead behind the velvet curtain
+            shortly after the final bow — struck once, cleanly, with the bronze
+            star award kept backstage.
+          </p>
+          <p>
+            The curtain fell at 9:47 PM. By 9:52, the body was found. In those
+            five minutes, four people were known to be backstage: the leading
+            actress, the stagehand, the playwright, and the theatre critic.
+          </p>
+          <p>
+            Question them. One of them is lying — and the truth doesn't always
+            announce itself. Listen for what doesn't add up, between what they
+            tell you and what the others say.
+          </p>
+          <p>When you're certain, make your accusation. You'll only get one.</p>
+          <div class="signature">
+            — Chief Inspector's notes, left on your desk
+          </div>
+        </div>
+        <button class="begin-btn" id="begin-btn">
+          Begin the interrogation
+        </button>
+      </div>
+
+      <!-- Main Game -->
+      <div class="screen" id="game-screen">
+        <div id="main-layout">
+          <div id="suspect-list">
+            <div class="panel-label">Suspects</div>
+          </div>
+
+          <div id="dialogue-panel">
+            <div id="suspect-header" style="display: none">
+              <div id="suspect-portrait"></div>
+              <div id="suspect-header-text">
+                <h3 id="suspect-name-display"></h3>
+                <p id="suspect-role-display"></p>
+              </div>
+            </div>
+            <div id="dialogue-body">
+              <div id="empty-dialogue">
+                Select a suspect from the left to begin questioning them.
+              </div>
+            </div>
+            <div id="questions" style="display: none"></div>
+          </div>
+
+          <div id="notebook">
+            <div class="panel-label">Your Notebook</div>
+            <div id="clue-list">
+              <div class="clue-empty">
+                Clues you uncover during questioning will be pinned here.
+              </div>
+            </div>
+            <div id="accuse-section">
+              <button id="accuse-btn">Make an accusation</button>
+              <div id="accuse-hint">
+                Question at least two suspects before accusing.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="screen" id="result-screen-wrap">
+        <div id="result-screen">
+          <div id="result-icon"></div>
+          <div id="result-title"></div>
+          <div id="result-text"></div>
+          <button id="play-again-btn">Start a new case</button>
+        </div>
       </div>
     </div>
 
-    <button id="reset-btn">clear cairn</button>
-
-    <div id="hint">
-      Click or tap to drop a stone. Click again to release it where it rests. No
-      timer — take all the time you like.
+    <!-- Accusation modal -->
+    <div id="accuse-modal">
+      <div id="accuse-modal-inner">
+        <h3>Who did it?</h3>
+        <p>This is your one and only accusation. Choose carefully.</p>
+        <div id="accuse-options"></div>
+        <button id="cancel-accuse">Not yet — keep questioning</button>
+      </div>
     </div>
-
-    <div id="toast"></div>
 
     <script>
       // ════════════════════════════════════════════════════════════════
-      // SETUP
+      // CASE DATA
+      // The killer is the STAGEHAND. Tell: she claims she never left the
+      // prop room after 9:40, but the CRITIC independently places her
+      // near the curtain at 9:45. The actress and playwright's stories
+      // are internally consistent and corroborate each other.
       // ════════════════════════════════════════════════════════════════
-      const canvas = document.getElementById("c");
-      const ctx = canvas.getContext("2d");
-      let W,
-        H,
-        DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-      function resize() {
-        W = window.innerWidth;
-        H = window.innerHeight;
-        canvas.width = W * DPR;
-        canvas.height = H * DPR;
-        canvas.style.width = W + "px";
-        canvas.style.height = H + "px";
-        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      }
-      resize();
-      window.addEventListener("resize", resize);
-
-      const GROUND_Y = () => H * 0.82;
-
-      // ════════════════════════════════════════════════════════════════
-      // PHYSICS — very gentle, slow falling stones that rest & wobble
-      // ════════════════════════════════════════════════════════════════
-      const GRAVITY = 0.045; // slow fall
-
-      let stones = []; // settled stones {x,y,w,h,rot,color,settled:true}
-      let activeStone = null; // currently controlled stone, swinging/falling
-
-      const STONE_PALETTE = [
-        { top: "#b8a890", mid: "#9a8a70", bot: "#7a6c56" },
-        { top: "#a8a8a0", mid: "#8a8a82", bot: "#6c6c64" },
-        { top: "#c8b8a0", mid: "#ab9a80", bot: "#897a62" },
-        { top: "#b0a8a8", mid: "#928a8a", bot: "#746c6c" },
-        { top: "#c0ac8c", mid: "#a08e6e", bot: "#7e6e54" },
+      const suspects = [
+        {
+          id: "actress",
+          name: "Lenora Quill",
+          role: "Leading Actress",
+          initial: "L",
+          questions: [
+            {
+              q: "Where were you when the curtain fell?",
+              a: "Right here, in the wings, catching my breath. The bow takes everything out of you. I didn't move from this spot until the screaming started.",
+              clue: "Lenora says she stayed in the wings from 9:47 until the body was found.",
+            },
+            {
+              q: "Did you see anyone near the prop room?",
+              a: "I saw the stagehand — what's her name, Vera — duck in and out of the prop room a few times before the curtain fell. Nothing unusual, that's her job.",
+              clue: "Lenora saw Vera near the prop room, but only before 9:47 — nothing after.",
+            },
+            {
+              q: "Did you get along with Mr. Vance?",
+              a: "He gave me my start. I owed him everything, and he never let me forget it. But murder him? I'd have sooner thanked him on stage every night for the rest of my career.",
+              clue: "Lenora had no apparent motive — she credits Vance for her career.",
+            },
+          ],
+        },
+        {
+          id: "stagehand",
+          name: "Vera Holt",
+          role: "Stagehand",
+          initial: "V",
+          questions: [
+            {
+              q: "Where were you between 9:47 and 9:52?",
+              a: "In the prop room, the whole time, counting inventory for tomorrow's matinee. I never set foot near the curtain after the show ended.",
+              clue: "Vera claims she never left the prop room after 9:40.",
+              contradiction: true,
+              contradictsWith: "critic",
+              contradictionNote:
+                "Vera says she never left the prop room after curtain — but the critic places her near the curtain at 9:45.",
+            },
+            {
+              q: "What was your relationship with Mr. Vance?",
+              a: "He was going to let me go after this run. Budget cuts, he said. Funny how the budget always seems to cut the people who actually do the work.",
+              clue: "Vera was about to be fired by Vance — a clear motive.",
+            },
+            {
+              q: "Did you touch the bronze star award that night?",
+              a: "I polish it before every show, it's tradition. I put it back on its stand backstage around 9:30 and didn't touch it again.",
+              clue: "Vera says she last touched the bronze star at 9:30, well before the murder.",
+            },
+          ],
+        },
+        {
+          id: "playwright",
+          name: "Desmond Ashworth",
+          role: "Playwright",
+          initial: "D",
+          questions: [
+            {
+              q: "Where were you when the curtain fell?",
+              a: "Pacing in the green room, frankly. Opening nights make me ill with nerves. The stage manager can vouch for me — she was filing notes two feet away the entire time.",
+              clue: "Desmond was in the green room with the stage manager as a witness.",
+            },
+            {
+              q: "How was your relationship with Mr. Vance?",
+              a: "Tense, but not violent. He wanted to cut my third act. I wanted to throttle him over coffee, not bronze statuettes.",
+              clue: "Desmond had creative disagreements with Vance, but a weak motive — and an alibi.",
+            },
+            {
+              q: "Did you see the stagehand backstage?",
+              a: "Briefly, before the curtain. Not after — I was in the green room by then, as I said.",
+              clue: "Desmond's account matches Lenora's — Vera was seen only before 9:47.",
+            },
+          ],
+        },
+        {
+          id: "critic",
+          name: "Harriet Voss",
+          role: "Theatre Critic",
+          initial: "H",
+          questions: [
+            {
+              q: "Why were you backstage at all? You're a critic.",
+              a: "Mr. Vance invited me for an exclusive look before I filed my review. I was waiting near the curtain for him at 9:45 when he never came.",
+              clue: "Harriet was near the curtain herself around 9:45, waiting for Vance.",
+            },
+            {
+              q: "Did you see anyone near the curtain around that time?",
+              a: "Yes, actually — the stagehand, Vera. She came through near the curtain around 9:45, looked startled to see me, and hurried off toward the prop room.",
+              clue: "Harriet saw Vera near the curtain at 9:45 — not in the prop room as Vera claimed.",
+              contradiction: true,
+              contradictsWith: "stagehand",
+              contradictionNote:
+                "Harriet places Vera at the curtain at 9:45 — directly contradicting Vera's claim of never leaving the prop room.",
+            },
+            {
+              q: "What did you think of Mr. Vance?",
+              a: "Ruthless about his theatre, generous about everything else. I was going to give the production three stars. He didn't deserve to die over a review he never read.",
+              clue: "Harriet had no apparent motive — her review was still unwritten.",
+            },
+          ],
+        },
       ];
 
-      function randStoneShape() {
-        // Irregular rounded rock polygon
-        const w = 46 + Math.random() * 38;
-        const h = w * (0.55 + Math.random() * 0.3);
-        const n = 7 + Math.floor(Math.random() * 3);
-        const pts = [];
-        for (let i = 0; i < n; i++) {
-          const a = (i / n) * Math.PI * 2;
-          const rx = (w / 2) * (0.78 + Math.random() * 0.26);
-          const ry = (h / 2) * (0.78 + Math.random() * 0.26);
-          pts.push({ x: Math.cos(a) * rx, y: Math.sin(a) * ry });
-        }
-        return { w, h, pts };
-      }
-
-      function spawnNewActiveStone() {
-        const shape = randStoneShape();
-        const color =
-          STONE_PALETTE[Math.floor(Math.random() * STONE_PALETTE.length)];
-        activeStone = {
-          x: W / 2,
-          y: H * 0.14,
-          vx: 0,
-          vy: 0,
-          shape,
-          color,
-          rot: 0,
-          rotV: 0,
-          state: "hover", // hover -> falling -> settled
-          swayT: Math.random() * Math.PI * 2,
-          grabbed: false,
-        };
-      }
+      const KILLER_ID = "stagehand";
 
       // ════════════════════════════════════════════════════════════════
-      // INTERACTION
-      // Click 1: stone begins falling from wherever it's hovering (x follows pointer while hovering)
-      // Click while falling: nudge it / give tiny horizontal push (gentle control)
+      // STATE
       // ════════════════════════════════════════════════════════════════
-      let pointerX = W / 2,
-        pointerY = H * 0.2;
-      let isPointerDown = false;
+      let selectedSuspect = null;
+      let askedQuestions = {}; // suspectId -> Set of question indices asked
+      let cluesFound = []; // {text, contradiction}
+      let suspectsQuestioned = new Set();
+      let caseResolved = false;
 
-      function getPointer(e) {
-        if (e.touches && e.touches[0])
-          return { x: e.touches[0].clientX, y: e.touches[0].clientY };
-        return { x: e.clientX, y: e.clientY };
-      }
+      suspects.forEach((s) => (askedQuestions[s.id] = new Set()));
 
-      document.addEventListener("mousemove", (e) => {
-        pointerX = e.clientX;
-        pointerY = e.clientY;
-      });
-      document.addEventListener(
-        "touchmove",
-        (e) => {
-          const p = getPointer(e);
-          pointerX = p.x;
-          pointerY = p.y;
-        },
-        { passive: true },
+      // ════════════════════════════════════════════════════════════════
+      // DOM REFS
+      // ════════════════════════════════════════════════════════════════
+      const briefingScreen = document.getElementById("briefing-screen");
+      const gameScreen = document.getElementById("game-screen");
+      const resultScreenWrap = document.getElementById("result-screen-wrap");
+      const suspectListEl = document.getElementById("suspect-list");
+      const dialogueBody = document.getElementById("dialogue-body");
+      const questionsEl = document.getElementById("questions");
+      const suspectHeader = document.getElementById("suspect-header");
+      const suspectPortrait = document.getElementById("suspect-portrait");
+      const suspectNameDisplay = document.getElementById(
+        "suspect-name-display",
       );
-
-      function handlePointerDown(e) {
-        const p = getPointer(e);
-        if (!activeStone) return;
-        if (activeStone.state === "hover") {
-          // Release: start falling
-          activeStone.state = "falling";
-          activeStone.vx = (Math.random() - 0.5) * 0.3;
-        } else if (activeStone.state === "falling") {
-          // Gentle nudge toward pointer x
-          activeStone.vx += (p.x - activeStone.x) * 0.0025;
-        }
-      }
-      canvas.addEventListener("mousedown", handlePointerDown);
-      canvas.addEventListener(
-        "touchstart",
-        (e) => {
-          e.preventDefault();
-          handlePointerDown(e);
-        },
-        { passive: false },
+      const suspectRoleDisplay = document.getElementById(
+        "suspect-role-display",
       );
+      const emptyDialogue = document.getElementById("empty-dialogue");
+      const clueListEl = document.getElementById("clue-list");
+      const accuseBtn = document.getElementById("accuse-btn");
+      const accuseHint = document.getElementById("accuse-hint");
+      const accuseModal = document.getElementById("accuse-modal");
+      const accuseOptions = document.getElementById("accuse-options");
 
       // ════════════════════════════════════════════════════════════════
-      // Collision: stone resting on ground or on top of another stone
-      // We use simplified AABB-ish height test based on shape's max radius
+      // INIT
       // ════════════════════════════════════════════════════════════════
-      function stoneRadius(stone) {
-        let maxR = 0;
-        for (const pt of stone.shape.pts) {
-          const r = Math.hypot(pt.x, pt.y);
-          if (r > maxR) maxR = r;
+      function renderSuspectList() {
+        suspectListEl
+          .querySelectorAll(".suspect-card")
+          .forEach((el) => el.remove());
+        for (const s of suspects) {
+          const card = document.createElement("div");
+          card.className =
+            "suspect-card" + (selectedSuspect === s.id ? " selected" : "");
+          card.innerHTML = `
+      <div class="suspect-name">${s.name}</div>
+      <div class="suspect-role">${s.role}</div>
+      ${askedQuestions[s.id].size > 0 ? `<div class="suspect-asked-badge">${askedQuestions[s.id].size}/${s.questions.length} asked</div>` : ""}
+    `;
+          card.addEventListener("click", () => selectSuspect(s.id));
+          suspectListEl.appendChild(card);
         }
-        return maxR;
       }
 
-      function stoneBottomY(stone) {
-        // lowest point considering rotation
-        let maxY = -Infinity;
-        for (const pt of stone.shape.pts) {
-          const rx = pt.x * Math.cos(stone.rot) - pt.y * Math.sin(stone.rot);
-          const ry = pt.x * Math.sin(stone.rot) + pt.y * Math.cos(stone.rot);
-          if (ry > maxY) maxY = ry;
-        }
-        return stone.y + maxY;
-      }
-      function stoneTopY(stone) {
-        let minY = Infinity;
-        for (const pt of stone.shape.pts) {
-          const rx = pt.x * Math.cos(stone.rot) - pt.y * Math.sin(stone.rot);
-          const ry = pt.x * Math.sin(stone.rot) + pt.y * Math.cos(stone.rot);
-          if (ry < minY) minY = ry;
-        }
-        return stone.y + minY;
-      }
-      function stoneWidthAt(stone) {
-        let minX = Infinity,
-          maxX = -Infinity;
-        for (const pt of stone.shape.pts) {
-          const rx = pt.x * Math.cos(stone.rot) - pt.y * Math.sin(stone.rot);
-          if (rx < minX) minX = rx;
-          if (rx > maxX) maxX = rx;
-        }
-        return { minX: stone.x + minX, maxX: stone.x + maxX };
+      function selectSuspect(id) {
+        selectedSuspect = id;
+        suspectsQuestioned.add(id);
+        const s = suspects.find((x) => x.id === id);
+
+        emptyDialogue.style.display = "none";
+        suspectHeader.style.display = "flex";
+        questionsEl.style.display = "flex";
+
+        suspectPortrait.textContent = s.initial;
+        suspectNameDisplay.textContent = s.name;
+        suspectRoleDisplay.textContent = s.role;
+
+        renderSuspectList();
+        renderDialogue(s);
+        renderQuestions(s);
+        updateAccuseAvailability();
       }
 
-      function findRestingSpot(stone) {
-        // Check against settled stones for support directly below stone.x
-        let restY = GROUND_Y();
-        let supportFound = null;
-
-        const sw = stoneWidthAt(stone);
-
-        for (const s of stones) {
-          const sw2 = stoneWidthAt(s);
-          // Overlap horizontally?
-          const overlap =
-            Math.min(sw.maxX, sw2.maxX) - Math.max(sw.minX, sw2.minX);
-          if (overlap > 14) {
-            const topOfS = stoneTopY(s);
-            if (topOfS < restY && stoneBottomY(stone) >= topOfS - 2) {
-              restY = topOfS;
-              supportFound = s;
-            }
-          }
-        }
-        return { restY, supportFound };
-      }
-
-      // ════════════════════════════════════════════════════════════════
-      // UPDATE LOOP
-      // ════════════════════════════════════════════════════════════════
-      let toppleWarning = false;
-      let stoneCountEl = document.getElementById("stone-count");
-
-      function updateActiveStone(dt) {
-        if (!activeStone) return;
-
-        if (activeStone.state === "hover") {
-          // Gentle floating sway, loosely follows pointer x
-          activeStone.swayT += 0.02 * dt;
-          const targetX = pointerX;
-          activeStone.x += (targetX - activeStone.x) * 0.06;
-          activeStone.y = H * 0.14 + Math.sin(activeStone.swayT) * 6;
-          activeStone.rot = Math.sin(activeStone.swayT * 0.7) * 0.08;
+      function renderDialogue(s) {
+        dialogueBody.innerHTML = "";
+        const asked = askedQuestions[s.id];
+        if (asked.size === 0) {
+          dialogueBody.innerHTML = `<div style="font-family:'Playfair Display',serif;font-style:italic;color:var(--smoke);font-size:14px;text-align:center;padding:30px;">${s.name} waits, arms folded. Ask your first question.</div>`;
           return;
         }
+        for (const idx of asked) {
+          const item = s.questions[idx];
+          const playerLine = document.createElement("div");
+          playerLine.className = "dialogue-line player";
+          playerLine.innerHTML = `<div class="bubble">${item.q}</div>`;
+          dialogueBody.appendChild(playerLine);
 
-        if (activeStone.state === "falling") {
-          activeStone.vy += GRAVITY * dt;
-          activeStone.vy = Math.min(activeStone.vy, 4.2); // terminal velocity, slow
-          activeStone.vx *= 0.985;
-          activeStone.x += activeStone.vx * dt;
-          activeStone.y += activeStone.vy * dt;
-          activeStone.rotV += activeStone.vx * 0.0008 * dt;
-          activeStone.rotV *= 0.98;
-          activeStone.rot += activeStone.rotV * dt;
+          const suspectLine = document.createElement("div");
+          suspectLine.className = "dialogue-line";
+          suspectLine.innerHTML = `<div class="bubble${item.contradiction ? " contradiction-flag" : ""}">${item.a}</div>`;
+          dialogueBody.appendChild(suspectLine);
+        }
+        dialogueBody.scrollTop = dialogueBody.scrollHeight;
+      }
 
-          // Keep within horizontal bounds
-          const margin = stoneRadius(activeStone);
-          if (activeStone.x < margin) {
-            activeStone.x = margin;
-            activeStone.vx *= -0.3;
-          }
-          if (activeStone.x > W - margin) {
-            activeStone.x = W - margin;
-            activeStone.vx *= -0.3;
-          }
+      function renderQuestions(s) {
+        questionsEl.innerHTML = "";
+        s.questions.forEach((q, idx) => {
+          const btn = document.createElement("button");
+          btn.className = "q-btn";
+          btn.textContent = q.q;
+          const wasAsked = askedQuestions[s.id].has(idx);
+          btn.disabled = wasAsked;
+          if (wasAsked) btn.textContent += "  ✓";
+          btn.addEventListener("click", () => askQuestion(s, idx));
+          questionsEl.appendChild(btn);
+        });
+      }
 
-          const { restY, supportFound } = findRestingSpot(activeStone);
-          const bottomY = stoneBottomY(activeStone);
+      function askQuestion(s, idx) {
+        askedQuestions[s.id].add(idx);
+        const item = s.questions[idx];
 
-          if (bottomY >= restY) {
-            // Land
-            const correction = restY - bottomY;
-            activeStone.y += correction;
-            settleStone(activeStone, supportFound);
-          }
+        addClue(item.clue, !!item.contradiction);
+
+        renderDialogue(s);
+        renderQuestions(s);
+        renderSuspectList();
+        updateAccuseAvailability();
+      }
+
+      function addClue(text, isContradiction) {
+        // Avoid exact duplicate clue text
+        if (cluesFound.some((c) => c.text === text)) return;
+        cluesFound.push({ text, contradiction: isContradiction });
+        renderClues();
+      }
+
+      function renderClues() {
+        if (cluesFound.length === 0) {
+          clueListEl.innerHTML =
+            '<div class="clue-empty">Clues you uncover during questioning will be pinned here.</div>';
+          return;
+        }
+        clueListEl.innerHTML = "";
+        for (const c of cluesFound) {
+          const card = document.createElement("div");
+          card.className =
+            "clue-card" + (c.contradiction ? " contradiction" : "");
+          card.innerHTML = `${c.contradiction ? '<div class="clue-stamp">CONTRADICTION</div>' : ""}${c.text}`;
+          clueListEl.appendChild(card);
         }
       }
 
-      function settleStone(stone, support) {
-        // Compute stability: how centered is this stone over its support / ground
-        let stable = true;
-        let tiltSeverity = 0;
-
-        if (support) {
-          const supportCenterX = support.x;
-          const offset = Math.abs(stone.x - supportCenterX);
-          const supportR = stoneRadius(support) * 0.7;
-          tiltSeverity = offset / supportR;
-          stable = tiltSeverity < 1.15;
-        }
-
-        // Settle physically (small rest wobble)
-        stone.state = "settled";
-        stone.settleWobble = stone.rotV * 3;
-        stone.rotV = 0;
-        stone.vx = 0;
-        stone.vy = 0;
-        stone.wobbleDecay = 0.92;
-        stone.glowT = 1; // freshly placed glow
-        stones.push(stone);
-
-        if (!stable && tiltSeverity > 1.4) {
-          // Topple! gentle - it slides off and settles on ground nearby, doesn't punish harshly
-          setTimeout(() => toppleStone(stone), 300);
-          showToast("It leans… and settles elsewhere");
-        } else if (!stable) {
-          showToast("Wobbly, but it holds");
-        } else {
-          const messages = [
-            "Balanced",
-            "Steady now",
-            "A quiet rest",
-            "Settled gently",
-            "Just right",
-          ];
-          showToast(messages[Math.floor(Math.random() * messages.length)]);
-        }
-
-        stoneCountEl.textContent = `${stones.length} stone${stones.length === 1 ? "" : "s"} balanced`;
-
-        // Spawn next stone after a pause
-        activeStone = null;
-        setTimeout(spawnNewActiveStone, 650);
-      }
-
-      function toppleStone(stone) {
-        // Remove from stack visually settled, give it a little roll animation off to a side then re-rest on ground
-        const idx = stones.indexOf(stone);
-        if (idx === -1) return;
-        stone.toppling = true;
-        stone.vx = (stone.x < W / 2 ? 1 : -1) * 0.6;
-        stone.vy = 0.3;
-        // let physics settle it again naturally on next frames via a mini simulation
-        const fall = () => {
-          stone.vy += GRAVITY * 0.6;
-          stone.x += stone.vx;
-          stone.y += stone.vy;
-          stone.rot += stone.vx * 0.02;
-          const groundBottom = GROUND_Y();
-          if (stoneBottomY(stone) >= groundBottom) {
-            stone.y += groundBottom - stoneBottomY(stone);
-            stone.toppling = false;
-            return;
-          }
-          requestAnimationFrame(fall);
-        };
-        fall();
-      }
-
-      // Settled stone subtle wobble decay & glow fade
-      function updateSettledStones(dt) {
-        for (const s of stones) {
-          if (s.settleWobble && Math.abs(s.settleWobble) > 0.001) {
-            s.rot += s.settleWobble * 0.02 * dt;
-            s.settleWobble *= Math.pow(s.wobbleDecay, dt);
-          }
-          if (s.glowT > 0) s.glowT = Math.max(0, s.glowT - 0.01 * dt);
-        }
+      function updateAccuseAvailability() {
+        const enough = suspectsQuestioned.size >= 2;
+        accuseBtn.disabled = !enough;
+        accuseHint.textContent = enough
+          ? "When you're ready, name your suspect."
+          : "Question at least two suspects before accusing.";
       }
 
       // ════════════════════════════════════════════════════════════════
-      // DRAWING
+      // ACCUSATION
       // ════════════════════════════════════════════════════════════════
-      function drawBackgroundScene() {
-        // Sky gradient already via CSS body bg, but add soft sun + distant hills
-        const t = performance.now() * 0.00004;
-
-        // Distant hill silhouette
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(0, H * 0.6);
-        ctx.bezierCurveTo(
-          W * 0.2,
-          H * 0.52,
-          W * 0.35,
-          H * 0.62,
-          W * 0.5,
-          H * 0.56,
-        );
-        ctx.bezierCurveTo(W * 0.7, H * 0.5, W * 0.85, H * 0.6, W, H * 0.55);
-        ctx.lineTo(W, H);
-        ctx.lineTo(0, H);
-        ctx.closePath();
-        ctx.fillStyle = "rgba(180,170,150,0.35)";
-        ctx.fill();
-        ctx.restore();
-
-        // Sun glow
-        const sunX = W * 0.78,
-          sunY = H * 0.18;
-        const sg = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 160);
-        sg.addColorStop(0, "rgba(255,240,210,.55)");
-        sg.addColorStop(1, "rgba(255,240,210,0)");
-        ctx.beginPath();
-        ctx.arc(sunX, sunY, 160, 0, Math.PI * 2);
-        ctx.fillStyle = sg;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(sunX, sunY, 30, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,248,225,.8)";
-        ctx.fill();
-
-        // Ground
-        const groundGrad = ctx.createLinearGradient(0, GROUND_Y(), 0, H);
-        groundGrad.addColorStop(0, "#c8b89c");
-        groundGrad.addColorStop(1, "#a89878");
-        ctx.fillStyle = groundGrad;
-        ctx.fillRect(0, GROUND_Y(), W, H - GROUND_Y());
-
-        // Ground texture line
-        ctx.strokeStyle = "rgba(120,105,80,.2)";
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(0, GROUND_Y());
-        ctx.lineTo(W, GROUND_Y());
-        ctx.stroke();
-
-        // Drifting birds
-        drawBirds(t);
-      }
-
-      let birds = [
-        { x: -50, y: 0.22, speed: 0.15, offset: 0 },
-        { x: -150, y: 0.26, speed: 0.12, offset: 1 },
-      ];
-      function drawBirds(t) {
-        ctx.strokeStyle = "rgba(90,80,65,.35)";
-        ctx.lineWidth = 1.5;
-        for (const b of birds) {
-          b.x += b.speed;
-          if (b.x > W + 50) b.x = -50;
-          const by =
-            H * b.y + Math.sin(performance.now() * 0.001 + b.offset) * 6;
-          ctx.beginPath();
-          ctx.moveTo(b.x - 8, by);
-          ctx.quadraticCurveTo(b.x - 3, by - 5, b.x, by);
-          ctx.quadraticCurveTo(b.x + 3, by - 5, b.x + 8, by);
-          ctx.stroke();
+      accuseBtn.addEventListener("click", () => {
+        accuseOptions.innerHTML = "";
+        for (const s of suspects) {
+          const btn = document.createElement("button");
+          btn.className = "accuse-option";
+          btn.innerHTML = `<strong>${s.name}</strong> — ${s.role}`;
+          btn.addEventListener("click", () => makeAccusation(s.id));
+          accuseOptions.appendChild(btn);
         }
-      }
-
-      function drawStonePolygon(stone, extraAlpha = 1) {
-        ctx.save();
-        ctx.translate(stone.x, stone.y);
-        ctx.rotate(stone.rot);
-
-        ctx.beginPath();
-        const pts = stone.shape.pts;
-        ctx.moveTo(pts[0].x, pts[0].y);
-        for (let i = 1; i < pts.length; i++) {
-          const mx = (pts[i - 1].x + pts[i].x) / 2;
-          const my = (pts[i - 1].y + pts[i].y) / 2;
-          ctx.quadraticCurveTo(pts[i - 1].x, pts[i - 1].y, mx, my);
-        }
-        ctx.closePath();
-
-        const grad = ctx.createLinearGradient(
-          0,
-          -stone.shape.h / 2,
-          0,
-          stone.shape.h / 2,
-        );
-        grad.addColorStop(0, stone.color.top);
-        grad.addColorStop(0.5, stone.color.mid);
-        grad.addColorStop(1, stone.color.bot);
-        ctx.globalAlpha = extraAlpha;
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        // Edge shading
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "rgba(255,255,255,.15)";
-        ctx.stroke();
-
-        // Texture speckles
-        ctx.fillStyle = "rgba(0,0,0,.06)";
-        for (let i = 0; i < 4; i++) {
-          const px = pts[i % pts.length].x * 0.4;
-          const py = pts[i % pts.length].y * 0.4;
-          ctx.beginPath();
-          ctx.arc(px, py, 1.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // Soft highlight
-        ctx.beginPath();
-        ctx.ellipse(
-          -stone.shape.w * 0.15,
-          -stone.shape.h * 0.2,
-          stone.shape.w * 0.18,
-          stone.shape.h * 0.12,
-          -0.4,
-          0,
-          Math.PI * 2,
-        );
-        ctx.fillStyle = "rgba(255,255,255,.18)";
-        ctx.fill();
-
-        ctx.globalAlpha = 1;
-        ctx.restore();
-
-        // Placement glow
-        if (stone.glowT > 0) {
-          ctx.save();
-          ctx.globalAlpha = stone.glowT * 0.4;
-          ctx.beginPath();
-          ctx.ellipse(
-            stone.x,
-            stone.y,
-            stone.shape.w * 0.7,
-            stone.shape.h * 0.7,
-            0,
-            0,
-            Math.PI * 2,
-          );
-          ctx.fillStyle = "rgba(255,250,220,1)";
-          ctx.filter = "blur(6px)";
-          ctx.fill();
-          ctx.filter = "none";
-          ctx.restore();
-        }
-      }
-
-      function drawShadow(stone, groundY) {
-        const dropDist = Math.max(0, groundY - stoneBottomY(stone));
-        const scale = Math.max(0.3, 1 - dropDist / 300);
-        const alpha = Math.max(0.05, 0.22 * scale);
-        ctx.save();
-        ctx.beginPath();
-        ctx.ellipse(
-          stone.x,
-          GROUND_Y() + 2,
-          stone.shape.w * 0.4 * scale,
-          7 * scale,
-          0,
-          0,
-          Math.PI * 2,
-        );
-        ctx.fillStyle = `rgba(60,50,40,${alpha})`;
-        ctx.fill();
-        ctx.restore();
-      }
-
-      // Particles for stone settling
-      let dustParticles = [];
-      function spawnSettleDust(x, y, w) {
-        for (let i = 0; i < 10; i++) {
-          const a = Math.PI + Math.random() * Math.PI;
-          const v = 0.5 + Math.random() * 1;
-          dustParticles.push({
-            x: x + (Math.random() - 0.5) * w * 0.6,
-            y,
-            vx: Math.cos(a) * v,
-            vy: Math.sin(a) * v * 0.4 - 0.3,
-            life: 1,
-            decay: 0.02 + Math.random() * 0.01,
-            size: 1.5 + Math.random() * 2,
-          });
-        }
-      }
-      function drawDust(dt) {
-        for (let i = dustParticles.length - 1; i >= 0; i--) {
-          const p = dustParticles[i];
-          p.x += p.vx * dt;
-          p.y += p.vy * dt;
-          p.vy += 0.02 * dt;
-          p.life -= p.decay * dt;
-          if (p.life <= 0) {
-            dustParticles.splice(i, 1);
-            continue;
-          }
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(150,130,100,${p.life * 0.5})`;
-          ctx.fill();
-        }
-      }
-
-      // Hook dust spawn into settle
-      const origSettle = settleStone;
-      settleStone = function (stone, support) {
-        spawnSettleDust(stone.x, stoneBottomY(stone), stone.shape.w);
-        origSettle(stone, support);
-      };
-
-      // ════════════════════════════════════════════════════════════════
-      // TOAST
-      // ════════════════════════════════════════════════════════════════
-      let toastTimer;
-      function showToast(msg) {
-        const t = document.getElementById("toast");
-        t.textContent = msg;
-        t.classList.add("show");
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => t.classList.remove("show"), 1900);
-      }
-
-      // ════════════════════════════════════════════════════════════════
-      // RESET
-      // ════════════════════════════════════════════════════════════════
-      document.getElementById("reset-btn").addEventListener("click", () => {
-        stones = [];
-        stoneCountEl.textContent = "0 stones balanced";
-        spawnNewActiveStone();
-        showToast("A clear space to begin again");
+        accuseModal.classList.add("show");
       });
 
-      // ════════════════════════════════════════════════════════════════
-      // MAIN LOOP
-      // ════════════════════════════════════════════════════════════════
-      let lastTs = performance.now();
-      function loop(ts) {
-        requestAnimationFrame(loop);
-        const dt = Math.min((ts - lastTs) / 16.67, 2.5);
-        lastTs = ts;
+      document.getElementById("cancel-accuse").addEventListener("click", () => {
+        accuseModal.classList.remove("show");
+      });
 
-        ctx.clearRect(0, 0, W, H);
-        drawBackgroundScene();
+      function makeAccusation(suspectId) {
+        accuseModal.classList.remove("show");
+        caseResolved = true;
 
-        updateSettledStones(dt);
-        for (const s of stones) {
-          drawShadow(s, GROUND_Y());
-        }
-        for (const s of stones) {
-          drawStonePolygon(s);
-        }
+        const correct = suspectId === KILLER_ID;
+        const accused = suspects.find((s) => s.id === suspectId);
+        const killer = suspects.find((s) => s.id === KILLER_ID);
 
-        drawDust(dt);
+        showResult(correct, accused, killer);
+      }
 
-        updateActiveStone(dt);
-        if (activeStone) {
-          drawShadow(activeStone, GROUND_Y());
-          drawStonePolygon(activeStone);
+      function showResult(correct, accused, killer) {
+        gameScreen.classList.remove("active");
+        resultScreenWrap.classList.add("active");
+
+        const icon = document.getElementById("result-icon");
+        const title = document.getElementById("result-title");
+        const text = document.getElementById("result-text");
+
+        if (correct) {
+          icon.textContent = "🔍";
+          title.textContent = "Case Closed";
+          text.innerHTML = `
+      <p style="margin-bottom:14px;">You were right. <strong>${killer.name}</strong> cracked under the weight of her own story — claiming she never left the prop room after 9:40, while Harriet Voss placed her squarely at the curtain at 9:45, just minutes before the body was found.</p>
+      <p style="margin-bottom:14px;">Faced with the contradiction, Vera confessed: Vance had told her that afternoon she'd be let go after the run. She went to confront him one last time. It wasn't planned. The bronze star was simply within reach.</p>
+      <p>The Aldous Theatre will reopen next season, under new management — and a quieter prop room.</p>
+    `;
+        } else {
+          icon.textContent = "✗";
+          title.textContent = "Wrong Call";
+          text.innerHTML = `
+      <p style="margin-bottom:14px;">You accused <strong>${accused.name}</strong> — but the evidence didn't hold. ${accused.name}'s account never contradicted anyone else's testimony.</p>
+      <p style="margin-bottom:14px;">The real culprit was <strong>${killer.name}</strong>. She claimed she never left the prop room after 9:40 — but Harriet Voss independently placed her near the curtain at 9:45, just before the body was found. That was the thread to pull.</p>
+      <p>The case goes cold. Perhaps a second look at the notebook would have caught it.</p>
+    `;
         }
       }
 
-      spawnNewActiveStone();
-      requestAnimationFrame(loop);
+      // ════════════════════════════════════════════════════════════════
+      // SCREEN FLOW
+      // ════════════════════════════════════════════════════════════════
+      document.getElementById("begin-btn").addEventListener("click", () => {
+        briefingScreen.classList.remove("active");
+        gameScreen.classList.add("active");
+        renderSuspectList();
+      });
+
+      document
+        .getElementById("play-again-btn")
+        .addEventListener("click", () => {
+          // Reset state
+          selectedSuspect = null;
+          askedQuestions = {};
+          suspects.forEach((s) => (askedQuestions[s.id] = new Set()));
+          cluesFound = [];
+          suspectsQuestioned = new Set();
+          caseResolved = false;
+
+          resultScreenWrap.classList.remove("active");
+          briefingScreen.classList.add("active");
+
+          emptyDialogue.style.display = "flex";
+          suspectHeader.style.display = "none";
+          questionsEl.style.display = "none";
+          dialogueBody.innerHTML = "";
+          dialogueBody.appendChild(emptyDialogue);
+          renderClues();
+        });
+
+      // Initial render
+      renderSuspectList();
     </script>
   </body>
 </html>
