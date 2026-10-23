@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
-    <title>The Velvet Curtain Case</title>
+    <title>Last Call at the Mercer</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Special+Elite&family=Inter:wght@400;500&display=swap"
       rel="stylesheet"
@@ -27,6 +27,7 @@
         --blood: #8b2c2c;
         --smoke: #6b6458;
         --folder: #c9a876;
+        --neon: #3f6b5c;
       }
 
       body {
@@ -34,7 +35,7 @@
         background-image:
           radial-gradient(
             ellipse at 30% 20%,
-            rgba(168, 130, 60, 0.06) 0%,
+            rgba(63, 107, 92, 0.07) 0%,
             transparent 50%
           ),
           radial-gradient(
@@ -48,14 +49,14 @@
         overflow-x: hidden;
       }
 
-      /* ── Desk lamp vignette ── */
+      /* ── City-light vignette ── */
       body::before {
         content: "";
         position: fixed;
         inset: 0;
         background: radial-gradient(
           ellipse 80% 60% at 50% 0%,
-          rgba(168, 130, 60, 0.08) 0%,
+          rgba(63, 107, 92, 0.1) 0%,
           transparent 60%
         );
         pointer-events: none;
@@ -68,6 +69,25 @@
         max-width: 1100px;
         margin: 0 auto;
         padding: 32px 24px 80px;
+      }
+
+      #back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Special Elite", monospace;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--brass);
+        text-decoration: none;
+        margin-bottom: 24px;
+        opacity: 0.85;
+        transition: opacity 0.15s, transform 0.15s;
+      }
+      #back-link:hover {
+        opacity: 1;
+        transform: translateX(-3px);
       }
 
       /* ── Header ── */
@@ -86,7 +106,7 @@
       h1 {
         font-family: "Playfair Display", serif;
         font-weight: 900;
-        font-size: clamp(32px, 6vw, 56px);
+        font-size: clamp(30px, 6vw, 52px);
         color: var(--paper);
         letter-spacing: 0.01em;
         line-height: 1.05;
@@ -228,9 +248,6 @@
       .suspect-card.selected {
         border-left-color: var(--blood);
         background: var(--paper-dark);
-      }
-      .suspect-card.accused {
-        opacity: 0.45;
       }
       .suspect-name {
         font-family: "Playfair Display", serif;
@@ -497,6 +514,8 @@
         width: 100%;
         padding: 32px;
         box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+        max-height: 85vh;
+        overflow-y: auto;
       }
       #accuse-modal-inner h3 {
         font-family: "Playfair Display", serif;
@@ -589,10 +608,12 @@
   </head>
   <body>
     <div id="app">
+      
+
       <div id="case-header">
-        <div id="case-label">Case File No. 7</div>
-        <h1>The Velvet Curtain</h1>
-        <div id="case-sub">A Theatre District Mystery</div>
+        <div id="case-label">Case File No. 12</div>
+        <h1>Last Call at the Mercer</h1>
+        <div id="case-sub">A Downtown Bar Mystery</div>
       </div>
 
       <!-- Briefing -->
@@ -600,24 +621,32 @@
         <div id="briefing">
           <h2>The Situation</h2>
           <p>
-            Opening night at the Aldous Theatre ended in tragedy. Mr. Edmund
-            Vance, the theatre's owner, was found dead behind the velvet curtain
-            shortly after the final bow — struck once, cleanly, with the bronze
-            star award kept backstage.
+            The Mercer's tenth anniversary party wrapped up just after
+            midnight — confetti, the good whiskey, half the neighborhood
+            packed into a bar built for half that many. By 12:30 the doors
+            were locked and the last guests gone.
           </p>
           <p>
-            The curtain fell at 9:47 PM. By 9:52, the body was found. In those
-            five minutes, four people were known to be backstage: the leading
-            actress, the stagehand, the playwright, and the theatre critic.
+            At 1:15 AM, the doorman found Tom Reyes, the Mercer's owner,
+            dead on the floor of his upstairs office. He'd been struck once
+            with one of his own anniversary trophies — the ten-year award
+            that sat on his shelf for exactly one night before it was used
+            on him.
           </p>
           <p>
-            Question them. One of them is lying — and the truth doesn't always
-            announce itself. Listen for what doesn't add up, between what they
-            tell you and what the others say.
+            Five people had keys, reasons, or both to still be in the
+            building after closing: his bartender, his business partner,
+            his ex-wife, his newest investor, and the doorman who found him.
+            Everyone has an account of where they were. Not everyone's
+            account survives contact with someone else's.
           </p>
-          <p>When you're certain, make your accusation. You'll only get one.</p>
+          <p>
+            Question them. Cross-reference what they tell you. When the
+            timeline stops adding up for one of them, you'll know who to
+            name — but you only get one name.
+          </p>
           <div class="signature">
-            — Chief Inspector's notes, left on your desk
+            — Left on your desk, still smelling faintly of bar rail
           </div>
         </div>
         <button class="begin-btn" id="begin-btn">
@@ -658,7 +687,7 @@
             <div id="accuse-section">
               <button id="accuse-btn">Make an accusation</button>
               <div id="accuse-hint">
-                Question at least two suspects before accusing.
+                Question at least three suspects before accusing.
               </div>
             </div>
           </div>
@@ -688,117 +717,141 @@
 
     <script>
       // ════════════════════════════════════════════════════════════════
-      // CASE DATA
-      // The killer is the STAGEHAND. Tell: she claims she never left the
-      // prop room after 9:40, but the CRITIC independently places her
-      // near the curtain at 9:45. The actress and playwright's stories
-      // are internally consistent and corroborate each other.
+      // CASE DATA — "Last Call at the Mercer"
+      // The killer is the BUSINESS PARTNER (Marcus). Tell: he claims he
+      // left at 12:30 right after the party and never came back — but
+      // the DOORMAN independently saw him re-enter through the back
+      // delivery door around 12:50, a detail Marcus never mentions.
+      // Everyone else's account is internally consistent and corroborated.
       // ════════════════════════════════════════════════════════════════
 
       const suspects = [
         {
-          id: "actress",
-          name: "Lenora Quill",
-          role: "Leading Actress",
-          initial: "L",
+          id: "bartender",
+          name: "Priya Nair",
+          role: "Head Bartender",
+          initial: "P",
           questions: [
             {
-              q: "Where were you when the curtain fell?",
-              a: "Right here, in the wings, catching my breath. The bow takes everything out of you. I didn't move from this spot until the screaming started.",
-              clue: "Lenora says she stayed in the wings from 9:47 until the body was found.",
+              q: "Where were you after the party ended?",
+              a: "Behind the bar until almost 1, doing the count-down and restocking for tomorrow's brunch shift. Eli was finishing up near the door the whole time — ask him.",
+              clue: "Priya says she was behind the bar doing close-out duties until nearly 1:00 AM.",
             },
             {
-              q: "Did you see anyone near the prop room?",
-              a: "I saw the stagehand — what's her name, Vera — duck in and out of the prop room a few times before the curtain fell. Nothing unusual, that's her job.",
-              clue: "Lenora saw Vera near the prop room, but only before 9:47 — nothing after.",
+              q: "Did you and Tom get along?",
+              a: "We did, mostly. He pulled me aside that night, said the till had been short for months and he wanted to talk numbers tomorrow. I won't lie, that rattled me.",
+              clue: "Tom confronted Priya about a till shortage the night he died — she had a motive.",
             },
             {
-              q: "Did you get along with Mr. Vance?",
-              a: "He gave me my start. I owed him everything, and he never let me forget it. But murder him? I'd have sooner thanked him on stage every night for the rest of my career.",
-              clue: "Lenora had no apparent motive — she credits Vance for her career.",
+              q: "Did you go up to his office at all?",
+              a: "Never. I don't go up there unless he calls me up, and he didn't call me up. I was downstairs the entire time, ask anyone.",
+              clue: "Priya denies ever going upstairs to the office that night.",
             },
           ],
         },
         {
-          id: "stagehand",
-          name: "Vera Holt",
-          role: "Stagehand",
-          initial: "V",
+          id: "partner",
+          name: "Marcus Whelan",
+          role: "Business Partner",
+          initial: "M",
           questions: [
             {
-              q: "Where were you between 9:47 and 9:52?",
-              a: "In the prop room, the whole time, counting inventory for tomorrow's matinee. I never set foot near the curtain after the show ended.",
-              clue: "Vera claims she never left the prop room after 9:40.",
+              q: "Where did you go after the party ended?",
+              a: "Home. I said my goodbyes around 12:30, walked out the front, and that was that. I wasn't exactly in a mood to linger — Tom and I hadn't spoken two civil words all week.",
+              clue: "Marcus claims he left through the front door at 12:30 and never returned.",
               contradiction: true,
-              contradictsWith: "critic",
+              contradictsWith: "doorman",
               contradictionNote:
-                "Vera says she never left the prop room after curtain — but the critic places her near the curtain at 9:45.",
+                "Marcus says he left at 12:30 and never came back — but the doorman saw him re-enter through the delivery door around 12:50.",
             },
             {
-              q: "What was your relationship with Mr. Vance?",
-              a: "He was going to let me go after this run. Budget cuts, he said. Funny how the budget always seems to cut the people who actually do the work.",
-              clue: "Vera was about to be fired by Vance — a clear motive.",
+              q: "What was the tension between you two about?",
+              a: "I wanted to sell. I've got a buyer ready to pay real money and Tom wouldn't even take the meeting. Ten years is a long time to be stuck on a name over a door.",
+              clue: "Marcus wanted to sell the bar; Tom refused — a clear motive for Marcus.",
             },
             {
-              q: "Did you touch the bronze star award that night?",
-              a: "I polish it before every show, it's tradition. I put it back on its stand backstage around 9:30 and didn't touch it again.",
-              clue: "Vera says she last touched the bronze star at 9:30, well before the murder.",
+              q: "Did you go back into the building at any point?",
+              a: "No. Why would I? I told you, I left at 12:30. Whatever happened after that, I wasn't there for it.",
+              clue: "Marcus insists he never returned to the building after 12:30.",
             },
           ],
         },
         {
-          id: "playwright",
-          name: "Desmond Ashworth",
-          role: "Playwright",
+          id: "exwife",
+          name: "Dana Reyes",
+          role: "Tom's Ex-Wife",
           initial: "D",
           questions: [
             {
-              q: "Where were you when the curtain fell?",
-              a: "Pacing in the green room, frankly. Opening nights make me ill with nerves. The stage manager can vouch for me — she was filing notes two feet away the entire time.",
-              clue: "Desmond was in the green room with the stage manager as a witness.",
+              q: "Why were you at the party at all?",
+              a: "Ten years of the place I helped him build — I wasn't going to skip it out of spite. I came, had one drink, talked to old friends, left around 12:15 in a cab. The driver can confirm, I have the receipt on my phone.",
+              clue: "Dana left in a cab at 12:15, with a receipt to confirm it.",
             },
             {
-              q: "How was your relationship with Mr. Vance?",
-              a: "Tense, but not violent. He wanted to cut my third act. I wanted to throttle him over coffee, not bronze statuettes.",
-              clue: "Desmond had creative disagreements with Vance, but a weak motive — and an alibi.",
+              q: "How was the divorce settlement going?",
+              a: "Slow, and ugly, like they all are. We were arguing over the building's lease value. But I wanted money out of him, not him in a casket — dead men don't write checks.",
+              clue: "Dana and Tom had an ongoing dispute over the settlement, but she notes a dead Tom is financially useless to her.",
             },
             {
-              q: "Did you see the stagehand backstage?",
-              a: "Briefly, before the curtain. Not after — I was in the green room by then, as I said.",
-              clue: "Desmond's account matches Lenora's — Vera was seen only before 9:47.",
+              q: "Did you still have a key to the building?",
+              a: "I did, technically — never gave it back. Sentimental, I suppose, or lazy. I didn't use it that night. I was gone before you'd have needed one.",
+              clue: "Dana still had a key but says she left well before it would've mattered.",
             },
           ],
         },
         {
-          id: "critic",
-          name: "Harriet Voss",
-          role: "Theatre Critic",
-          initial: "H",
+          id: "investor",
+          name: "Carl Stieg",
+          role: "New Investor",
+          initial: "C",
           questions: [
             {
-              q: "Why were you backstage at all? You're a critic.",
-              a: "Mr. Vance invited me for an exclusive look before I filed my review. I was waiting near the curtain for him at 9:45 when he never came.",
-              clue: "Harriet was near the curtain herself around 9:45, waiting for Vance.",
+              q: "What's your stake in the Mercer?",
+              a: "I put money in eight months ago for a second location. Tom was supposed to sign final paperwork this week. I was at the party mostly to be seen shaking his hand for photos.",
+              clue: "Carl had invested in a second-location deal pending Tom's signature.",
             },
             {
-              q: "Did you see anyone near the curtain around that time?",
-              a: "Yes, actually — the stagehand, Vera. She came through near the curtain around 9:45, looked startled to see me, and hurried off toward the prop room.",
-              clue: "Harriet saw Vera near the curtain at 9:45 — not in the prop room as Vera claimed.",
+              q: "Was the deal in trouble?",
+              a: "Tom told me that night, quietly, that he was getting cold feet about expansion. If he'd pulled out, I'd have eaten a real loss. I told him we'd talk Monday and left it there.",
+              clue: "Tom was about to back out of the investment deal — a financial motive for Carl.",
+            },
+            {
+              q: "When did you leave the party?",
+              a: "Around 12:20, with two other investors — we shared a car to a late dinner downtown. The restaurant has my reservation on record, 12:45 seating, three names.",
+              clue: "Carl left with witnesses for a 12:45 dinner reservation downtown — a solid alibi.",
+            },
+          ],
+        },
+        {
+          id: "doorman",
+          name: "Eli Frost",
+          role: "Doorman",
+          initial: "E",
+          questions: [
+            {
+              q: "Walk me through your night after closing.",
+              a: "I locked the front at 12:30 once the last guests cleared out, then did a walk-through. Found Tom upstairs at 1:15. Forty-five minutes is a long stretch to account for, I know — most of it was just me checking the floor and the storeroom.",
+              clue: "Eli locked the front door at 12:30 and discovered the body at 1:15.",
+            },
+            {
+              q: "Did anyone come back into the building after the party ended?",
+              a: "Yes — Marcus, actually. I almost didn't mention it, didn't think it was strange at the time. He came through the delivery door around 12:50, said he forgot his jacket. He was only inside a few minutes before he left again.",
+              clue: "Eli saw Marcus re-enter through the delivery door around 12:50, claiming he'd forgotten his jacket.",
               contradiction: true,
-              contradictsWith: "stagehand",
+              contradictsWith: "partner",
               contradictionNote:
-                "Harriet places Vera at the curtain at 9:45 — directly contradicting Vera's claim of never leaving the prop room.",
+                "Eli places Marcus back inside the building at 12:50 — directly contradicting Marcus's claim that he left at 12:30 and never returned.",
             },
             {
-              q: "What did you think of Mr. Vance?",
-              a: "Ruthless about his theatre, generous about everything else. I was going to give the production three stars. He didn't deserve to die over a review he never read.",
-              clue: "Harriet had no apparent motive — her review was still unwritten.",
+              q: "Did you see or hear anything from upstairs?",
+              a: "Nothing I thought twice about. A bump, maybe, sometime before 1. Old building, old floors — I figured it was the ice machine again.",
+              clue: "Eli heard a noise from upstairs sometime before 1:00 AM but dismissed it at the time.",
             },
           ],
         },
       ];
 
-      const KILLER_ID = "stagehand";
+      const KILLER_ID = "partner";
 
       // ════════════════════════════════════════════════════════════════
       // STATE
@@ -836,7 +889,7 @@
       const accuseOptions = document.getElementById("accuse-options");
 
       // ════════════════════════════════════════════════════════════════
-      // INIT
+      // RENDER
       // ════════════════════════════════════════════════════════════════
       function renderSuspectList() {
         suspectListEl
@@ -924,7 +977,6 @@
       }
 
       function addClue(text, isContradiction) {
-        // Avoid exact duplicate clue text
         if (cluesFound.some((c) => c.text === text)) return;
         cluesFound.push({ text, contradiction: isContradiction });
         renderClues();
@@ -947,11 +999,11 @@
       }
 
       function updateAccuseAvailability() {
-        const enough = suspectsQuestioned.size >= 2;
+        const enough = suspectsQuestioned.size >= 3;
         accuseBtn.disabled = !enough;
         accuseHint.textContent = enough
           ? "When you're ready, name your suspect."
-          : "Question at least two suspects before accusing.";
+          : "Question at least three suspects before accusing.";
       }
 
       // ════════════════════════════════════════════════════════════════
@@ -995,18 +1047,19 @@
         if (correct) {
           icon.textContent = "🔍";
           title.textContent = "Case Closed";
+          try{const s=JSON.parse(localStorage.getItem('unsolved-desk-solved')||'[]');if(!s.includes('last-call-mercer')){s.push('last-call-mercer');localStorage.setItem('unsolved-desk-solved',JSON.stringify(s));}}catch{}
           text.innerHTML = `
-      <p style="margin-bottom:14px;">You were right. <strong>${killer.name}</strong> cracked under the weight of her own story — claiming she never left the prop room after 9:40, while Harriet Voss placed her squarely at the curtain at 9:45, just minutes before the body was found.</p>
-      <p style="margin-bottom:14px;">Faced with the contradiction, Vera confessed: Vance had told her that afternoon she'd be let go after the run. She went to confront him one last time. It wasn't planned. The bronze star was simply within reach.</p>
-      <p>The Aldous Theatre will reopen next season, under new management — and a quieter prop room.</p>
+      <p style="margin-bottom:14px;">You were right. <strong>${killer.name}</strong> said he left at 12:30 and never came back — but Eli Frost placed him re-entering through the delivery door at 12:50, supposedly for a forgotten jacket. He never mentioned coming back at all.</p>
+      <p style="margin-bottom:14px;">Faced with the contradiction, Marcus admitted it: he went back to make one last case for selling the bar, Tom refused again, and a decade of resentment finally found something heavy enough to use.</p>
+      <p>The Mercer stays open under new ownership — Priya's, as it turns out, with Carl's investment quietly redirected to keep the name on the door.</p>
     `;
         } else {
           icon.textContent = "✗";
           title.textContent = "Wrong Call";
           text.innerHTML = `
-      <p style="margin-bottom:14px;">You accused <strong>${accused.name}</strong> — but the evidence didn't hold. ${accused.name}'s account never contradicted anyone else's testimony.</p>
-      <p style="margin-bottom:14px;">The real culprit was <strong>${killer.name}</strong>. She claimed she never left the prop room after 9:40 — but Harriet Voss independently placed her near the curtain at 9:45, just before the body was found. That was the thread to pull.</p>
-      <p>The case goes cold. Perhaps a second look at the notebook would have caught it.</p>
+      <p style="margin-bottom:14px;">You accused <strong>${accused.name}</strong> — but the timeline never broke for them. Every account they gave matched what someone else independently confirmed.</p>
+      <p style="margin-bottom:14px;">The real culprit was <strong>${killer.name}</strong>. He claimed he left at 12:30 and never returned — but Eli Frost saw him come back through the delivery door at 12:50, a detail Marcus conveniently left out every time. That was the thread to pull.</p>
+      <p>The Mercer closes for renovations. Officially, anyway.</p>
     `;
         }
       }
@@ -1023,7 +1076,6 @@
       document
         .getElementById("play-again-btn")
         .addEventListener("click", () => {
-          // Reset state
           selectedSuspect = null;
           askedQuestions = {};
           suspects.forEach((s) => (askedQuestions[s.id] = new Set()));
