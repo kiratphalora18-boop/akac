@@ -19,16 +19,38 @@
       }
 
       :root {
-        --cream: #fdf6ec;
-        --warm: #f5e6cc;
-        --gold: #c9965a;
-        --deep: #3b2a1a;
-        --blush: #e8b89a;
-        --rose: #d4846a;
+        --cream: #fff8e8;
+        --warm: #ffe7d6;
+        --gold: #f4a900;
+        --deep: #38245f;
+        --blush: #ffb8d2;
+        --rose: #ee4f83;
+        --teal: #21b7a5;
       }
 
       html {
         scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: var(--rose) #fff0d5;
+      }
+
+      html::-webkit-scrollbar {
+        width: 12px;
+      }
+      html::-webkit-scrollbar-track {
+        background: #fff0d5;
+        border-left: 1px solid rgba(56, 36, 95, 0.08);
+      }
+      html::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, var(--gold), var(--rose), var(--teal));
+        border: 3px solid #fff0d5;
+        border-radius: 999px;
+      }
+      html::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #ffc533, #df3973, #159b8d);
+      }
+      html::-webkit-scrollbar-button {
+        display: none;
       }
 
       body {
@@ -159,12 +181,7 @@
 
       /* ── HERO ── */
       #hero {
-        background: linear-gradient(
-          160deg,
-          #fdf6ec 0%,
-          #f5e6cc 60%,
-          #f0d8b8 100%
-        );
+        background: linear-gradient(145deg, #fff6d9 0%, #ffe0eb 52%, #d9f7f0 100%);
         overflow: hidden;
       }
       #hero::after {
@@ -173,7 +190,7 @@
         inset: 0;
         background: radial-gradient(
           ellipse at 50% 80%,
-          rgba(212, 132, 106, 0.12) 0%,
+          rgba(244, 169, 0, 0.2) 0%,
           transparent 70%
         );
         pointer-events: none;
@@ -228,6 +245,14 @@
         opacity: 0;
         animation: heroUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.5s;
       }
+      /* The games heading reuses the animated hero styles outside the hero. */
+      #games .hero-title,
+      #games .hero-sub {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+      #games .hero-sub { margin-bottom: 0; }
       @keyframes heroUp {
         to {
           opacity: 1;
@@ -247,6 +272,54 @@
         text-transform: uppercase;
         opacity: 0;
         animation: heroUp 1s ease forwards 1s;
+      }
+      .countdown-card {
+        margin-top: 30px;
+        padding: 18px 26px 20px;
+        border: 1px solid rgba(238, 79, 131, 0.24);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.62);
+        box-shadow: 0 12px 36px rgba(56, 36, 95, 0.08);
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        animation: heroUp 1s ease forwards 0.8s;
+      }
+      .countdown-label {
+        color: var(--deep);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .countdown-time {
+        display: flex;
+        justify-content: center;
+        gap: clamp(10px, 3vw, 24px);
+        margin-top: 12px;
+      }
+      .countdown-unit {
+        min-width: 48px;
+        color: var(--rose);
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.35rem, 4vw, 2rem);
+        font-weight: 700;
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
+      }
+      .countdown-unit span {
+        display: block;
+        margin-top: 5px;
+        color: var(--deep);
+        font-family: "Lato", sans-serif;
+        font-size: 0.58rem;
+        font-weight: 400;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .countdown-open {
+        margin-top: 12px;
+        color: #6b578e;
+        font-size: 0.8rem;
       }
       .scroll-line {
         width: 1px;
@@ -308,7 +381,7 @@
 
       /* ── MESSAGE ── */
       #message {
-        background: var(--warm);
+        background: linear-gradient(135deg, #ffe7d6, #fff0bd 55%, #f8dff0);
       }
       .card {
         max-width: 680px;
@@ -371,7 +444,7 @@
 
       /* ── REASONS ── */
       #reasons {
-        background: linear-gradient(160deg, #f5e6cc 0%, #fdf6ec 100%);
+        background: linear-gradient(150deg, #fff0bd 0%, #ffe4ef 52%, #d9f7f0 100%);
       }
       #reasons h2 {
         font-family: "Playfair Display", serif;
@@ -642,6 +715,7 @@
         justify-content: center;
         text-align: center;
         padding: 32px;
+        overflow-y: auto;
         opacity: 0;
         transition: opacity 0.4s ease;
       }
@@ -790,17 +864,80 @@
       }
 
       @media (max-width: 600px) {
+        .section {
+          min-height: 100svh;
+          padding: 72px 20px;
+        }
+        #games .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+        #games .hero-sub { font-size: 0.78rem; letter-spacing: 0.16em; }
+        .hero-emoji { font-size: 4rem; margin-bottom: 22px; }
+        .scroll-hint { margin-top: 44px; }
+        .countdown-card { margin-top: 24px; padding: 16px 18px; }
+        .countdown-label { font-size: 0.68rem; }
+        .countdown-unit { min-width: 42px; }
+        .countdown-open { font-size: 0.74rem; }
+        .game-btn-group {
+          width: 100%; max-width: 420px; flex-direction: column;
+          gap: 12px; margin-top: 34px;
+        }
+        .game-btn {
+          width: 100%; min-height: 54px; padding: 16px 20px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 0.78rem; line-height: 1.45; letter-spacing: 0.08em;
+        }
         .card {
-          padding: 40px 28px;
+          padding: 38px 24px;
+          border-radius: 20px;
+        }
+        .card p { line-height: 1.8; }
+        #reasons .subtitle { margin-bottom: 34px; line-height: 1.6; }
+        .reasons-grid {
+          grid-template-columns: 1fr; max-width: 420px; gap: 14px;
+        }
+        .reason-card { padding: 26px 22px; }
+        #promise .subtitle { margin-bottom: 34px; }
+        .promise-item { gap: 14px; padding: 20px; }
+        .big-heart { font-size: 5.5rem; margin-bottom: 24px; }
+        #final > p { font-size: 1rem; margin-bottom: 34px; }
+        .btn-group {
+          width: 100%; max-width: 420px; flex-direction: column; gap: 12px;
         }
         .stuck-box,
         .celebrate-box {
-          padding: 44px 28px;
+          padding: 38px 24px; border-radius: 22px;
+        }
+        .stuck-emoji, .celebrate-emoji { font-size: 3.8rem; }
+        .stuck-box h2, .celebrate-box h2 { font-size: 2rem; }
+        .stuck-box p, .celebrate-box p {
+          font-size: 0.96rem; line-height: 1.7; margin-bottom: 26px;
         }
         .forgive-btn,
-        .no-btn {
-          padding: 16px 36px;
-          font-size: 0.85rem;
+        .no-btn,
+        .close-btn {
+          width: 100%; min-height: 52px; padding: 15px 18px;
+          font-size: 0.78rem; letter-spacing: 0.08em;
+        }
+        .overlay { padding: 18px; }
+        #progress { height: 3px; }
+      }
+
+      @media (hover: none), (pointer: coarse) {
+        *, *::before, *::after { cursor: auto; }
+        #cursor, #cursor-ring { display: none; }
+        .game-btn, .forgive-btn, .no-btn, .close-btn {
+          cursor: pointer; touch-action: manipulation;
+        }
+        .game-btn:hover, .forgive-btn:hover, .reason-card:hover,
+        .promise-item:hover { transform: none; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
@@ -816,6 +953,16 @@
       <span class="hero-emoji">...</span>
       <h1 class="hero-title">Welcome <em>Back</em>,<br />Sheen.</h1>
       <p class="hero-sub">There is something new.</p>
+      <div class="countdown-card" aria-label="Countdown until the site opens">
+        <p class="countdown-label" id="countdown-label">Counting down to the big day</p>
+        <div class="countdown-time" id="countdown" role="timer" aria-live="off">
+          <div class="countdown-unit"><b id="countdown-days">--</b><span>Days</span></div>
+          <div class="countdown-unit"><b id="countdown-hours">--</b><span>Hours</span></div>
+          <div class="countdown-unit"><b id="countdown-minutes">--</b><span>Minutes</span></div>
+          <div class="countdown-unit"><b id="countdown-seconds">--</b><span>Seconds</span></div>
+        </div>
+        <p class="countdown-open" id="countdown-open">visit this site on 19th nov at 00:05</p>
+      </div>
       <div class="scroll-hint">
         <span>scroll</span>
         <div class="scroll-line"></div>
@@ -827,7 +974,7 @@
       <div class="game-btn-group">
         <a class="game-btn" href="game1.html">Cosmic Bubble Drifter</a>
         <a class="game-btn" href="game2.html">The Velvet Curtain Case</a>
-        <a class="game-btn" href="game3.html">Ember Yard — Tactical Range version beta </a>
+        <a class="game-btn" href="game3.html">Ember Yard — Tactical Range version beta [for me]</a>
       </div>
     </section>
 
@@ -989,6 +1136,30 @@
         prog.style.width = pct + "%";
       });
 
+      // ── Site launch countdown (November 18, 2026 at 11:59:55 PM India time)
+      const launchAt = new Date("2026-11-18T23:59:55+05:30").getTime();
+      const countdownLabel = document.getElementById("countdown-label");
+      const countdownOpen = document.getElementById("countdown-open");
+      function updateCountdown() {
+        const remaining = launchAt - Date.now();
+        if (remaining <= 0) {
+          document.getElementById("countdown").hidden = true;
+          countdownLabel.textContent = "The big day is here!";
+          countdownOpen.textContent = "The site is now open 🎉";
+          return;
+        }
+        const days = Math.floor(remaining / 86400000);
+        const hours = Math.floor((remaining % 86400000) / 3600000);
+        const minutes = Math.floor((remaining % 3600000) / 60000);
+        const seconds = Math.floor((remaining % 60000) / 1000);
+        document.getElementById("countdown-days").textContent = String(days).padStart(2, "0");
+        document.getElementById("countdown-hours").textContent = String(hours).padStart(2, "0");
+        document.getElementById("countdown-minutes").textContent = String(minutes).padStart(2, "0");
+        document.getElementById("countdown-seconds").textContent = String(seconds).padStart(2, "0");
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
       // ── Scroll reveal
       const revealEls = document.querySelectorAll(".reveal");
       const io = new IntersectionObserver(
@@ -1026,8 +1197,11 @@
         petalLayer.appendChild(p);
         p.addEventListener("animationend", () => p.remove());
       }
-      setInterval(createPetal, 500);
-      for (let i = 0; i < 14; i++) setTimeout(createPetal, i * 180);
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduceMotion && !window.matchMedia("(pointer: coarse)").matches) {
+        setInterval(createPetal, 500);
+        for (let i = 0; i < 14; i++) setTimeout(createPetal, i * 180);
+      }
 
       // ── No button
       let noCount = 0;
