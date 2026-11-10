@@ -4,9 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#080b18" />
-  <meta name="description" content="A note for readers: something is cooking. Stay tuned for 19 November 2026." />
-  <title>A Note for You — 19 November 2026</title>
+  <meta name="theme-color" content="#fff8ee" />
+  <meta name="description" content="A birthday celebration for Sheen is on its way. Join us on 19 November 2026." />
+  <title>A Birthday Surprise for You — 19 November 2026</title>
+  <script>
+    try { if (localStorage.getItem('birthday-theme') === 'dark') document.documentElement.classList.add('dark-mode'); } catch (_) {}
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -168,6 +171,77 @@
     .site-link:focus-visible {
       outline: 3px solid #f4ff4e;
       outline-offset: 4px;
+    }
+
+    /* Warm birthday invitation */
+    :root {
+      color-scheme: light;
+      --cream: #fff9f0;
+      --warm: #ffecd9;
+      --gold: #d68c24;
+      --deep: #49344c;
+      --blush: #ffd8e3;
+      --rose: #d85679;
+      --teal: #398f83;
+      --muted: #766879;
+    }
+    html { background: var(--cream); scrollbar-color: #d85679 #fff0d5; }
+    html::-webkit-scrollbar-track { background: #fff0d5; border-left-color: #49344c12; }
+    html::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #f2bc83, #d85679, #aa8acb); border-color: #fff0d5; }
+    body {
+      color: var(--deep);
+      background:
+        radial-gradient(ellipse at 12% 14%, #ffe0e9 0, transparent 35%),
+        radial-gradient(ellipse at 90% 82%, #fce6d2 0, transparent 36%),
+        linear-gradient(145deg, #fffaf3, #fff1e9 58%, #f7eff8);
+    }
+    body::before {
+      opacity: .35;
+      background-image: radial-gradient(circle, #d8567936 1px, transparent 1.5px);
+      background-size: 30px 30px;
+      mask-image: linear-gradient(to bottom, #000, transparent 80%);
+    }
+    .site-link {
+      top: max(22px, env(safe-area-inset-top));
+      border: 1px solid #d85679;
+      border-radius: 999px;
+      background: #d85679;
+      box-shadow: 0 10px 24px #d8567930;
+      color: #fff;
+      text-shadow: none;
+    }
+    .site-link:hover { box-shadow: 0 14px 30px #d8567945; }
+    .site-link:focus-visible { outline-color: #aa8acb; }
+    .letter {
+      border: 1px solid #e9cad2;
+      border-radius: 28px;
+      background: #fffdf9;
+      box-shadow: 0 28px 80px #49344c12, inset 0 1px #fff;
+    }
+    .letter::before {
+      background: radial-gradient(circle at 94% 2%, #fde3ea 0, transparent 37%), radial-gradient(circle at 4% 100%, #f8e9f6 0, transparent 42%);
+    }
+    .sender { color: #766879; text-shadow: none; }
+    .stamp {
+      border: 1px solid #d85679;
+      border-radius: 50%;
+      color: #d85679;
+      text-shadow: none;
+      box-shadow: 0 5px 14px #d8567920;
+    }
+    .salutation { color: #766879; }
+    .letter h1 { color: #49344c; text-shadow: none; }
+    .letter h1 span { color: #d85679; text-shadow: none; }
+    .message, .signoff-copy, .date { color: #766879; }
+    .countdown { border: 1px solid #eed3da; border-radius: 20px; background: #fff8f5; }
+    .countdown-label { color: #766879; }
+    .countdown-unit { border: 1px solid #f0dce0; border-radius: 14px; background: #fffdf9; color: #d85679; }
+    .countdown-unit-label { color: #766879; }
+    .letter-signoff { border-color: #49344c18; }
+    #cursor { background: #d85679; mix-blend-mode: multiply; box-shadow: 0 0 14px #d8567930; }
+    #cursor-ring { border-color: #aa8acb; box-shadow: 0 0 14px #aa8acb30; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
     }
 
     .letter-wrap {
@@ -455,6 +529,98 @@
         transition-duration: .01ms !important;
       }
     }
+
+    /* Keep the invitation's birthday colors above the base letter styles. */
+    body {
+      color: #49344c;
+      background: radial-gradient(ellipse at 12% 14%, #ffe0e9, transparent 35%), radial-gradient(ellipse at 90% 82%, #fce6d2, transparent 36%), linear-gradient(145deg, #fffaf3, #fff1e9 58%, #f7eff8);
+    }
+    body::before { opacity: .35; background-image: radial-gradient(circle, #d8567936 1px, transparent 1.5px); background-size: 30px 30px; }
+    .site-link { border: 1px solid #d85679; border-radius: 999px; background: #d85679; box-shadow: 0 10px 24px #d8567930; color: #fff; text-shadow: none; }
+    .site-link:hover { box-shadow: 0 14px 30px #d8567945; }
+    .site-link:focus-visible { outline-color: #aa8acb; }
+    .letter { border: 1px solid #e9cad2; border-radius: 28px; background: #fffdf9; box-shadow: 0 28px 80px #49344c12, inset 0 1px #fff; }
+    .letter::before { background: radial-gradient(circle at 94% 2%, #fde3ea, transparent 37%), radial-gradient(circle at 4% 100%, #f8e9f6, transparent 42%); }
+    .sender, .salutation, .message, .signoff-copy, .date, .countdown-label, .countdown-unit-label { color: #766879; text-shadow: none; }
+    .stamp { border-color: #d85679; border-radius: 50%; color: #d85679; text-shadow: none; box-shadow: 0 5px 14px #d8567920; }
+    .letter h1 { color: #49344c; text-shadow: none; }
+    .letter h1 span { color: #d85679; text-shadow: none; }
+    .countdown {
+      width: min(100%, 620px);
+      margin: 26px auto 0;
+      padding: 20px;
+      border: 1px solid #eed3da;
+      border-radius: 22px;
+      background: #fff8f5;
+      box-shadow: 0 12px 32px #49344c0a;
+    }
+    .countdown-grid { width: 100%; max-width: none; gap: clamp(8px, 2vw, 14px); }
+    .countdown-unit {
+      min-width: 0;
+      min-height: 92px;
+      align-content: center;
+      gap: 8px;
+      padding: 12px 6px;
+      border: 1px solid #f0dce0;
+      border-radius: 16px;
+      background: #fffdf9;
+      color: #d85679;
+      box-shadow: 0 4px 14px #49344c08;
+    }
+    .countdown-number { color: #49344c; text-shadow: none; }
+    .countdown-unit-label { color: #766879; }
+    .letter-signoff { border-color: #49344c18; }
+    #cursor { background: #d85679; mix-blend-mode: multiply; box-shadow: 0 0 14px #d8567930; }
+    #cursor-ring { border-color: #aa8acb; box-shadow: 0 0 14px #aa8acb30; }
+    @media (max-width: 520px) {
+      body { background: radial-gradient(ellipse at 12% 14%, #ffe0e9, transparent 35%), radial-gradient(ellipse at 90% 82%, #fce6d2, transparent 36%), linear-gradient(145deg, #fffaf3, #fff1e9 58%, #f7eff8); }
+      .countdown { padding: 14px; border-radius: 18px; }
+      .countdown-grid { gap: 7px; }
+      .countdown-unit { min-height: 78px; padding: 10px 2px; border-radius: 13px; }
+      .countdown-number { font-size: clamp(20px, 7vw, 27px); }
+      .countdown-unit-label { font-size: 8px; letter-spacing: .08em; }
+    }
+    .theme-toggle {
+      position: fixed;
+      z-index: 6;
+      top: max(76px, calc(env(safe-area-inset-top) + 76px));
+      right: max(22px, env(safe-area-inset-right));
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid #e9cad2;
+      border-radius: 999px;
+      background: #fffdf4eF;
+      color: #49344c;
+      font: 700 11px "Lato", sans-serif;
+      letter-spacing: .04em;
+      box-shadow: 0 8px 24px #49344c12;
+      cursor: pointer;
+    }
+    .theme-toggle:hover { border-color: #d85679; }
+    .theme-toggle:focus-visible { outline: 3px solid #aa8acb; outline-offset: 3px; }
+    html.dark-mode { color-scheme: dark; background: #211c2b; }
+    html.dark-mode body {
+      color: #f7eaf0;
+      background: radial-gradient(ellipse at 12% 14%, #563347, transparent 38%), radial-gradient(ellipse at 90% 82%, #47374e, transparent 40%), linear-gradient(145deg, #211c2b, #2b2233 58%, #242232);
+    }
+    html.dark-mode body::before { opacity: .2; background-image: radial-gradient(circle, #f3b3ca45 1px, transparent 1.5px); }
+    html.dark-mode .letter { border-color: #594454; background: #30283a; box-shadow: 0 28px 80px #100d1890, inset 0 1px #ffffff0d; }
+    html.dark-mode .letter::before { background: radial-gradient(circle at 94% 2%, #70405266, transparent 38%), radial-gradient(circle at 4% 100%, #51415c88, transparent 42%); }
+    html.dark-mode .sender, html.dark-mode .salutation, html.dark-mode .message, html.dark-mode .signoff-copy, html.dark-mode .date,
+    html.dark-mode .countdown-label, html.dark-mode .countdown-unit-label { color: #d5c4d3; }
+    html.dark-mode .stamp { border-color: #f09bb7; color: #ffb5c9; }
+    html.dark-mode .letter h1 { color: #fff3e9; }
+    html.dark-mode .letter h1 span { color: #ff9db8; }
+    html.dark-mode .countdown { border-color: #5b4557; background: #292431; box-shadow: 0 14px 38px #100d1845; }
+    html.dark-mode .countdown-unit { border-color: #554353; background: #352d3b; color: #ffabc1; box-shadow: 0 5px 15px #100d1835; }
+    html.dark-mode .countdown-number { color: #ffabc1; text-shadow: none; }
+    html.dark-mode .letter-signoff { border-color: #ffffff20; }
+    html.dark-mode .site-link { background: #d85679; color: #fff; }
+    html.dark-mode .theme-toggle { border-color: #665064; background: #30283a; color: #fff0e8; }
+    html.dark-mode #cursor { mix-blend-mode: screen; }
+    @media (max-width: 520px) {
+      .theme-toggle { top: max(12px, env(safe-area-inset-top)); left: max(12px, env(safe-area-inset-left)); right: auto; min-height: 38px; }
+    }
   </style>
 </head>
 
@@ -462,16 +628,17 @@
   <div id="cursor"></div>
   <div id="cursor-ring"></div>
   <a class="site-link" href="main1.html">Open main page <span aria-hidden="true">↗</span></a>
+  <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
   <main class="letter-wrap" aria-labelledby="letter-title">
     <article class="letter">
       <header class="letter-top">
-        <p class="sender">A little note for you!</p>
+      <p class="sender">A birthday surprise for you</p>
         <span class="stamp" aria-hidden="true">S</span>
       </header>
       <section class="letter-body">
         <p class="salutation">Dear Sheen,</p>
-        <h1 id="letter-title">Something is <span>cooking.</span></h1>
-        <p class="message"> I can’t share all the details just yet, but it won’t be long. <strong>Stay tuned.</strong>
+        <h1 id="letter-title">Your celebration is <span>almost here.</span></h1>
+        <p class="message">Countdown is started the recipe is ready!</p>
         </p>
         <section class="countdown" id="countdown" aria-label="Countdown to 19 November 2026">
           <p class="countdown-label" id="countdownLabel">Counting down </p>
@@ -488,13 +655,25 @@
         </section>
       </section>
       <footer class="letter-signoff">
-        <p class="signoff-copy">Until then,<strong>See you soon.</strong></p>
+        <p class="signoff-copy">Until the candles are lit,<strong>save a little wish.</strong></p>
         <p class="date">Coming your way<br />19 November 2026</p>
       </footer>
     </article>
   </main>
   <script>
     (function () {
+      const themeToggle = document.querySelector('.theme-toggle');
+      function setTheme(isDark) {
+        document.documentElement.classList.toggle('dark-mode', isDark);
+        themeToggle.setAttribute('aria-pressed', String(isDark));
+        themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        themeToggle.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+        document.querySelector('meta[name="theme-color"]').content = isDark ? '#211c2b' : '#fff8ee';
+        try { localStorage.setItem('birthday-theme', isDark ? 'dark' : 'light'); } catch (_) {}
+      }
+      setTheme(document.documentElement.classList.contains('dark-mode'));
+      themeToggle.addEventListener('click', () => setTheme(!document.documentElement.classList.contains('dark-mode')));
+
       // Custom cursor (mouse only)
       if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
         const cur = document.getElementById('cursor');

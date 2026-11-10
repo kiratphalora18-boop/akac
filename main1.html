@@ -4,7 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome Back,Sheen</title>
+  <meta name="theme-color" content="#fff8ee" />
+  <meta name="description" content="A little birthday celebration for Sheen, with games, memories, and a surprise." />
+  <meta name="theme-color" content="#fff8ee" />
+  <title>A Birthday Celebration for Sheen</title>
+  <script>
+    try { if (localStorage.getItem('birthday-theme') === 'dark') document.documentElement.classList.add('dark-mode'); } catch (_) {}
+  </script>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap"
     rel="stylesheet" />
@@ -1714,6 +1720,292 @@
       text-shadow: 0 0 22px #ff38a899;
     }
 
+    /* Birthday refresh */
+    :root {
+      --cream: #fff9f0;
+      --warm: #ffecd9;
+      --gold: #d68c24;
+      --deep: #422c46;
+      --blush: #ffd8e3;
+      --rose: #d85679;
+      --teal: #398f83;
+      --birthday-ink: #49344c;
+      --birthday-muted: #766879;
+      --birthday-pink: #d85679;
+      --birthday-peach: #f2ad78;
+      --birthday-lilac: #aa8acb;
+      --birthday-mint: #78b9a8;
+    }
+
+    body {
+      color: var(--birthday-ink);
+      background: #fff9f0;
+      font-family: "Lato", sans-serif;
+    }
+
+    body::before {
+      opacity: .26;
+      background-image: radial-gradient(circle, #d8567938 1.2px, transparent 1.5px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, #000, transparent 72%);
+    }
+
+    .section { border-color: #49344c12; }
+
+    #hero,
+    body.birthday-event #hero {
+      background:
+        radial-gradient(ellipse at 18% 25%, #ffdce8 0, transparent 34%),
+        radial-gradient(ellipse at 82% 70%, #fce4c9 0, transparent 38%),
+        linear-gradient(145deg, #fffaf3, #fff2e9 58%, #f8eef8);
+    }
+
+    #hero::after { background: radial-gradient(ellipse at 50% 90%, #e9d9f3aa, transparent 60%); }
+    #hero .hero-title,
+    #games .hero-title,
+    #reasons h2,
+    #promise h2,
+    #final h2 {
+      color: var(--birthday-ink);
+      text-shadow: none;
+      letter-spacing: -.035em;
+    }
+
+    #hero .hero-title em { color: var(--birthday-pink); text-shadow: none; }
+    .hero-emoji { filter: drop-shadow(0 12px 16px #d8567930); }
+    .hero-sub, .scroll-hint, .countdown-open {
+      color: var(--birthday-muted);
+      text-shadow: none;
+    }
+
+    .countdown-card {
+      border: 1px solid #e5c5ce;
+      border-radius: 24px;
+      background: #fffdf9eF;
+      box-shadow: 0 24px 70px #59354d12, inset 0 1px #fff;
+    }
+
+    .countdown-label, .countdown-unit span { color: var(--birthday-muted); }
+    .countdown-unit { color: var(--birthday-pink); text-shadow: none; }
+    .birthday-gift-link, .forgive-btn, .glitch-start {
+      border: 0;
+      border-radius: 999px;
+      background: var(--birthday-pink);
+      box-shadow: 0 10px 24px #d8567930;
+      color: white;
+      text-shadow: none;
+    }
+    .birthday-gift-link:hover, .forgive-btn:hover, .glitch-start:hover:not(:disabled) {
+      background: #bd4265;
+      box-shadow: 0 14px 28px #d8567940;
+    }
+
+    #games, #glitch-game, #message, #reasons, #final,
+    body.birthday-event #message, body.birthday-event #reasons, body.birthday-event #final {
+      background: linear-gradient(155deg, #fffaf3, #fff4ed 58%, #f8f0f7);
+    }
+
+    #games .hero-sub { color: var(--birthday-muted); }
+    .game-btn {
+      border: 1px solid #e8c7cf;
+      border-radius: 24px;
+      background: #fffdf9;
+      color: var(--birthday-ink);
+      box-shadow: 0 18px 44px #59354d10;
+    }
+    .game-btn::before { background: radial-gradient(circle at 100% 0, #ffdbe7aa, transparent 52%); }
+    .game-btn:nth-child(2)::before { background: radial-gradient(circle at 100% 0, #e8ddf4, transparent 52%); }
+    .game-btn::after { background: var(--birthday-pink); box-shadow: 0 0 12px #d8567955; }
+    .game-btn:hover, .game-btn:nth-child(2):hover {
+      transform: translateY(-5px);
+      border-color: #d88c9e;
+      background: #fffdf9;
+      color: var(--birthday-ink);
+      box-shadow: 0 24px 50px #59354d19;
+    }
+    .game-kicker, .game-kicker b { color: var(--birthday-pink); }
+    .game-name { color: var(--birthday-ink); text-shadow: none; }
+    .game-launch { border-color: #49344c18; color: var(--birthday-muted); }
+    .game-launch span { color: var(--birthday-pink); }
+    .game-btn:focus-visible, .birthday-gift-link:focus-visible, .forgive-btn:focus-visible {
+      outline: 3px solid var(--birthday-lilac);
+      outline-offset: 4px;
+    }
+
+    #glitch-game h2 { color: var(--birthday-ink); text-shadow: none; }
+    #glitch-game .subtitle { color: var(--birthday-muted); letter-spacing: .08em; }
+    .glitch-console {
+      border: 1px solid #e8c7cf;
+      border-radius: 24px;
+      background: #fffdf9;
+      box-shadow: 0 20px 54px #59354d12;
+    }
+    .glitch-hud { color: var(--birthday-muted); }
+    .glitch-hud strong { color: var(--birthday-pink); }
+    .glitch-arena {
+      border-color: #eed5dc;
+      border-radius: 16px;
+      background: radial-gradient(ellipse at center, #fff0f4, #f7edf5 76%);
+    }
+    .glitch-arena::before { opacity: .3; background: radial-gradient(circle, #d856792b 1px, transparent 1.5px); background-size: 22px 22px; }
+    .glitch-target { border-color: white; background: radial-gradient(circle, #fff 0 7%, #ed7796 32%, #aa8acb 78%); box-shadow: 0 5px 20px #d8567970; }
+    .glitch-status { color: var(--birthday-muted); }
+    .glitch-start:focus-visible, .glitch-target:focus-visible { outline-color: var(--birthday-lilac); }
+
+    .card, .reason-card, .promise-item {
+      border: 1px solid #e8c7cf;
+      border-radius: 24px;
+      background: #fffdf9;
+      box-shadow: 0 18px 50px #59354d10;
+      color: var(--birthday-ink);
+    }
+    .card h2, .reason-card h3, .promise-num { color: var(--birthday-pink); text-shadow: none; }
+    .card p, .reason-card p, .promise-text, #final>p, .stuck-box p, .celebrate-box p { color: var(--birthday-muted); }
+    .card::before { color: var(--birthday-pink); opacity: .07; }
+    #reasons .subtitle, #promise .subtitle { color: var(--birthday-muted); }
+    #promise, body.birthday-event #promise {
+      background: linear-gradient(145deg, #f6eef9, #fff0e7 72%, #fff9f0);
+      color: var(--birthday-ink);
+    }
+    #promise::before { background: radial-gradient(circle at 15% 20%, #fff8 0 2px, transparent 3px); background-size: 32px 32px; }
+    .promise-item { border-color: #e8c7cf; }
+    .promise-item:hover, .reason-card:hover { border-color: #d88c9e; background: #fff9f5; box-shadow: 0 20px 48px #59354d14; }
+    .divider { background: linear-gradient(90deg, transparent, #e79cb1, #d9b7e7, transparent); box-shadow: none; }
+    .big-heart { filter: drop-shadow(0 10px 20px #d8567930); }
+    .no-btn { border-color: #d9c4da; border-radius: 999px; color: var(--birthday-muted); }
+    .no-btn:hover { border-color: var(--birthday-pink); background: #fdeaf0; color: var(--birthday-pink); }
+    .overlay { background: #44344970; backdrop-filter: blur(12px); }
+    .stuck-box, .celebrate-box {
+      border: 1px solid #efd0d8;
+      border-radius: 28px;
+      background: #fffaf4;
+      box-shadow: 0 30px 100px #39233930;
+    }
+    .stuck-box h2, .celebrate-box h2 { color: var(--birthday-ink); text-shadow: none; }
+    .close-btn { border-radius: 999px; background: var(--birthday-pink); box-shadow: 0 10px 24px #d8567930; }
+    #progress { background: linear-gradient(90deg, #e987a1, #f2bc83, #ad94cf); box-shadow: 0 0 10px #d8567940; }
+    .birthday-transition { background: radial-gradient(ellipse at 50% 42%, #fff0e4, #f5e7f3); color: var(--birthday-pink); text-shadow: none; }
+
+    .site-nav {
+      position: fixed;
+      z-index: 100;
+      top: max(14px, env(safe-area-inset-top));
+      left: 50%;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      max-width: calc(100vw - 28px);
+      padding: 6px;
+      overflow-x: auto;
+      border: 1px solid #ecd7dc;
+      border-radius: 999px;
+      background: #fffdf4eF;
+      box-shadow: 0 8px 28px #49344c12;
+      transform: translateX(-50%);
+      scrollbar-width: none;
+      backdrop-filter: blur(14px);
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-flex;
+      min-height: 40px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 15px;
+      border-radius: 999px;
+      color: var(--birthday-muted);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .site-nav a:hover, .site-nav a:focus-visible { background: #fbe7ec; color: var(--birthday-pink); outline: none; }
+    .theme-toggle {
+      display: inline-flex;
+      min-height: 40px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      border: 1px solid #e8c7cf;
+      border-radius: 999px;
+      background: #fff5f0;
+      color: var(--birthday-ink);
+      font: 700 .7rem "Lato", sans-serif;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .theme-toggle:hover { border-color: var(--birthday-pink); color: var(--birthday-pink); }
+    .theme-toggle:focus-visible { outline: 3px solid var(--birthday-lilac); outline-offset: 3px; }
+    #hero { padding-top: 108px; }
+    #hero::after { top: 12%; }
+
+    html.dark-mode { color-scheme: dark; background: #211c2b; scrollbar-color: #d85679 #211c2b; }
+    html.dark-mode::-webkit-scrollbar-track { background: #211c2b; border-left-color: #ffffff10; }
+    html.dark-mode::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #f2bc83, #d85679, #aa8acb); border-color: #211c2b; }
+    html.dark-mode body {
+      color: #f7eaf0;
+      background: radial-gradient(ellipse at 12% 18%, #563347 0, transparent 35%), radial-gradient(ellipse at 88% 72%, #45364d 0, transparent 38%), linear-gradient(145deg, #211c2b, #2b2233 60%, #242232);
+    }
+    html.dark-mode body::before { opacity: .17; background-image: radial-gradient(circle, #f3b3ca40 1px, transparent 1.5px); }
+    html.dark-mode .section { border-color: #ffffff10; }
+    html.dark-mode #hero, html.dark-mode body.birthday-event #hero,
+    html.dark-mode #games, html.dark-mode #glitch-game, html.dark-mode #message, html.dark-mode #reasons, html.dark-mode #final,
+    html.dark-mode body.birthday-event #message, html.dark-mode body.birthday-event #reasons, html.dark-mode body.birthday-event #final {
+      background: radial-gradient(ellipse at 15% 20%, #563347 0, transparent 38%), radial-gradient(ellipse at 85% 78%, #44364d 0, transparent 42%), linear-gradient(145deg, #211c2b, #2b2333 62%, #242232);
+    }
+    html.dark-mode #hero .hero-title, html.dark-mode #games .hero-title, html.dark-mode #reasons h2,
+    html.dark-mode #promise h2, html.dark-mode #final h2, html.dark-mode #glitch-game h2 { color: #fff2e9; }
+    html.dark-mode #hero .hero-title em { color: #ff9db8; }
+    html.dark-mode .hero-sub, html.dark-mode .scroll-hint, html.dark-mode .countdown-open,
+    html.dark-mode #games .hero-sub, html.dark-mode #glitch-game .subtitle, html.dark-mode #reasons .subtitle,
+    html.dark-mode #promise .subtitle { color: #d5c4d3; }
+    html.dark-mode .countdown-card, html.dark-mode .card, html.dark-mode .reason-card, html.dark-mode .promise-item,
+    html.dark-mode .game-btn, html.dark-mode .glitch-console {
+      border-color: #5d4555;
+      background: #30283a;
+      color: #f7eaf0;
+      box-shadow: 0 20px 55px #100d1870, inset 0 1px #ffffff0a;
+    }
+    html.dark-mode .countdown-label, html.dark-mode .countdown-unit span, html.dark-mode .card p,
+    html.dark-mode .reason-card p, html.dark-mode .promise-text, html.dark-mode #final>p,
+    html.dark-mode .game-launch, html.dark-mode .glitch-status { color: #d5c4d3; }
+    html.dark-mode .countdown-unit, html.dark-mode .card h2, html.dark-mode .reason-card h3,
+    html.dark-mode .promise-num, html.dark-mode .game-kicker, html.dark-mode .game-kicker b,
+    html.dark-mode .game-launch span, html.dark-mode .glitch-hud strong { color: #ffabc1; }
+    html.dark-mode .game-name { color: #fff2e9; }
+    html.dark-mode .game-btn::before { background: radial-gradient(circle at 100% 0, #70405288, transparent 52%); }
+    html.dark-mode .game-btn:nth-child(2)::before { background: radial-gradient(circle at 100% 0, #51415c, transparent 52%); }
+    html.dark-mode .game-launch { border-color: #ffffff20; }
+    html.dark-mode .glitch-hud { color: #e2cad7; }
+    html.dark-mode .glitch-arena { border-color: #634653; background: radial-gradient(ellipse at center, #4a3348, #282331 76%); }
+    html.dark-mode .glitch-arena::before { background-image: radial-gradient(circle, #f3b3ca35 1px, transparent 1.5px); }
+    html.dark-mode #promise, html.dark-mode body.birthday-event #promise { background: linear-gradient(145deg, #31283b, #392936 72%, #292431); color: #f7eaf0; }
+    html.dark-mode .promise-item:hover, html.dark-mode .reason-card:hover { border-color: #cc7992; background: #3b2d3d; }
+    html.dark-mode .divider { background: linear-gradient(90deg, transparent, #cf8198, #aa8acb, transparent); }
+    html.dark-mode .no-btn { border-color: #78617b; color: #e5d6e1; }
+    html.dark-mode .no-btn:hover { border-color: #ff9db8; background: #513347; color: #ffb5c9; }
+    html.dark-mode .overlay { background: #130f1ccc; }
+    html.dark-mode .stuck-box, html.dark-mode .celebrate-box { border-color: #634653; background: #30283a; }
+    html.dark-mode .stuck-box h2, html.dark-mode .celebrate-box h2 { color: #fff2e9; }
+    html.dark-mode .site-nav { border-color: #5d4555; background: #292331ed; box-shadow: 0 8px 28px #100d1870; }
+    html.dark-mode .site-nav a { color: #e2d1df; }
+    html.dark-mode .site-nav a:hover, html.dark-mode .site-nav a:focus-visible { background: #513347; color: #ffb5c9; }
+    html.dark-mode .theme-toggle { border-color: #665064; background: #382e3e; color: #fff0e8; }
+    html.dark-mode .theme-toggle:hover { border-color: #ff9db8; color: #ffb5c9; }
+    html.dark-mode .birthday-transition { background: radial-gradient(ellipse at 50% 42%, #563347, #211c2b); color: #ffb5c9; }
+
+    @media (max-width: 600px) {
+      .site-nav { top: max(10px, env(safe-area-inset-top)); width: calc(100% - 24px); justify-content: flex-start; }
+      .site-nav a { min-height: 38px; padding: 0 12px; font-size: .67rem; }
+      #hero { padding-top: 96px; }
+      .countdown-card { width: min(100% - 12px, 460px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .hero-emoji {
         animation: heartbeat 2.2s ease-in-out infinite;
@@ -1729,11 +2021,20 @@
   <div class="petal-layer" id="petals"></div>
   <div class="birthday-transition" id="birthday-transition" aria-hidden="true"><span>✦ The day is here ✦</span></div>
 
+  <nav class="site-nav" aria-label="Birthday site navigation">
+    <a href="#hero">Home</a>
+    <a href="#games">Play</a>
+    <a href="#message">A note</a>
+    <a href="#reasons">Memories</a>
+    <a href="#promise">Promise</a>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
+  </nav>
+
   <!-- HERO -->
   <section class="section" id="hero">
     <span class="hero-emoji" id="hero-emoji">🎁</span>
-    <h1 class="hero-title" id="hero-title">Welcome <em>Back</em>,<br />Sheen.</h1>
-    <p class="hero-sub" id="hero-sub">There is something new.<br />*Arcade</p>
+    <h1 class="hero-title" id="hero-title">Welcome<em>Back,</em><br/> Sheen.</h1>
+    <p class="hero-sub" id="hero-sub">Good friend, happy memories.</p>
     <div class="countdown-card" id="countdown-card" aria-label="Countdown until the birthday celebration">
       <p class="countdown-label" id="countdown-label">Counting down </p>
       <div class="countdown-time" id="countdown" role="timer" aria-live="off">
@@ -1786,7 +2087,7 @@
   <!-- MESSAGE -->
   <section class="section" id="message">
     <div class="card reveal">
-      <h2 class="reveal reveal-delay-1">To my dearest best friend…</h2>
+      <h2 class="reveal reveal-delay-1">A note for best friend</h2>
       <p class="reveal reveal-delay-2">
         I've been sitting with this for a while, trying to find the right
         words — because "sorry" alone feels too small for how much I owe you.
@@ -1843,7 +2144,7 @@
 
   <!-- FINAL -->
   <section class="section" id="final">
-    <span class="big-heart reveal">....</span>
+    <span class="big-heart reveal">🎂</span>
     <h2 class="reveal reveal-delay-1">Still Your Bestie?</h2>
     <p class="reveal reveal-delay-2">
       If you can find it in your heart to forgive me..if you dont wanna
@@ -1893,6 +2194,19 @@
   </div>
 
   <script>
+    const themeToggle = document.querySelector('.theme-toggle');
+    function setBirthdayTheme(isDark) {
+      document.documentElement.classList.toggle('dark-mode', isDark);
+      themeToggle.setAttribute('aria-pressed', String(isDark));
+      themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+      themeToggle.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      if (themeMeta) themeMeta.content = isDark ? '#211c2b' : '#fff8ee';
+      try { localStorage.setItem('birthday-theme', isDark ? 'dark' : 'light'); } catch (_) {}
+    }
+    setBirthdayTheme(document.documentElement.classList.contains('dark-mode'));
+    themeToggle.addEventListener('click', () => setBirthdayTheme(!document.documentElement.classList.contains('dark-mode')));
+
     // ── Custom cursor
     const cur = document.getElementById("cursor");
     const ring = document.getElementById("cursor-ring");
